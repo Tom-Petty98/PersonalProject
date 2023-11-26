@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalProject.InternalPortal", "PersonalProject\PersonalProject.InternalPortal.csproj", "{53EE4552-A556-40D4-ADDC-E7233E02AA80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseScripts", "DatabaseScripts", "{734BE8DE-06F5-4870-9F3A-8A336B939ECC}"
+	ProjectSection(SolutionItems) = preProject
+		DatabaseScripts\00.uspAddApplicationStatus.sql = DatabaseScripts\00.uspAddApplicationStatus.sql
+		DatabaseScripts\01.uspAddInstallerStatus.sql = DatabaseScripts\01.uspAddInstallerStatus.sql
+		DatabaseScripts\02.uspAddUserInviteStatus.sql = DatabaseScripts\02.uspAddUserInviteStatus.sql
+		DatabaseScripts\03.uspAddUserRole.sql = DatabaseScripts\03.uspAddUserRole.sql
+		DatabaseScripts\04.uspAddDocumentType.sql = DatabaseScripts\04.uspAddDocumentType.sql
+		DatabaseScripts\50.vw_Dashboard_Application.sql = DatabaseScripts\50.vw_Dashboard_Application.sql
+		DatabaseScripts\51.vw_Dashboard_Installer.sql = DatabaseScripts\51.vw_Dashboard_Installer.sql
+		DatabaseScripts\99.SeedApplicationDataTables.sql = DatabaseScripts\99.SeedApplicationDataTables.sql
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalProject.Domain", "PersonalProject.Domain\PersonalProject.Domain.csproj", "{97BE92E8-74EB-458E-81AB-A8C47FD63463}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalProject.Provider", "PersonalProject.Provider\PersonalProject.Provider.csproj", "{6C0F190E-B7F9-4344-86B6-D8D7F96308A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalProject.CoreAPI", "PersonalProject.CoreAPI\PersonalProject.CoreAPI.csproj", "{4009C74B-89C6-4661-982A-0940FC6FB479}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53EE4552-A556-40D4-ADDC-E7233E02AA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53EE4552-A556-40D4-ADDC-E7233E02AA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53EE4552-A556-40D4-ADDC-E7233E02AA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53EE4552-A556-40D4-ADDC-E7233E02AA80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97BE92E8-74EB-458E-81AB-A8C47FD63463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97BE92E8-74EB-458E-81AB-A8C47FD63463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97BE92E8-74EB-458E-81AB-A8C47FD63463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97BE92E8-74EB-458E-81AB-A8C47FD63463}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C0F190E-B7F9-4344-86B6-D8D7F96308A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C0F190E-B7F9-4344-86B6-D8D7F96308A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C0F190E-B7F9-4344-86B6-D8D7F96308A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C0F190E-B7F9-4344-86B6-D8D7F96308A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4009C74B-89C6-4661-982A-0940FC6FB479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4009C74B-89C6-4661-982A-0940FC6FB479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4009C74B-89C6-4661-982A-0940FC6FB479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4009C74B-89C6-4661-982A-0940FC6FB479}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCE40C20-8D93-4070-9966-93356334E066}
+	EndGlobalSection
+EndGlobal
