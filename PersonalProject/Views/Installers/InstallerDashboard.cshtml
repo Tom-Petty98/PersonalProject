@@ -1,0 +1,57 @@
+﻿@page
+@model IEnumerable<PersonalProject.Domain.Entities.InstallerDashboard>
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>Installers</h1>
+
+<p>
+    <a asp-page="Installers/Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ref Number</th>
+            <th>Installer Name</th>
+            <th>Status</th>
+            <th>Flagged For Audit</th>
+            <th>Review Recommendation</th>
+            <th>Last Status Change</th>
+        </tr>
+    </thead>
+    @if (Model.Any())
+    {
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RefNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InstallerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FlaggedForAudit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewRecommendation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastStatusChangeDate)
+                    </td>
+                    <td>
+                        <a asp-page="./Installers/Edit" asp-route-refNumber="@item.RefNumber">Edit</a> |
+                        <a asp-page="./Installers/Details" asp-route-refNumber="@item.RefNumber">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>

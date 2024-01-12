@@ -6,7 +6,7 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[vw_Dashboard_Application] AS
 SELECT 
-App.RefNumber AS 'AppRefNumber',
+App.RefNumber AS 'RefNumber',
 Addr.Postcode,
 AStat.Description AS 'StatusDescription',
 AStat.Code AS 'StatusCode',

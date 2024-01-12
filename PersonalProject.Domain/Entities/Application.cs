@@ -7,6 +7,7 @@ public class Application
     public int StatusId { get; set; }
     public bool? FlaggedForAudit { get; set; }
     public bool? ReviewRecommendation { get; set; }
+    public int InstallerId { get; set; }
     public int ApplicationDetailId { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; }

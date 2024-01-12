@@ -1,0 +1,83 @@
+﻿@page
+@using PersonalProject.InternalPortal.Models.Installers
+@model CreateInstallerViewModel
+
+@{
+    ViewData["Title"] = "Create Installer";
+}
+
+<h1>Create Application </h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FlaggedForAudit" class="control-label">Flagged For Audit</label>
+                <br />
+                <div class="form-check form-check-inline">
+                    <label asp-for="FlaggedForAudit" class="form-check-label">Yes</label>
+                    <input asp-for="FlaggedForAudit" class="form-check-input" value="true" type="radio" />
+                </div>
+                <div class="form-check form-check-inline">
+                    <label asp-for="FlaggedForAudit" class="form-check-label">No</label>
+                    <input asp-for="FlaggedForAudit" class="form-check-input" value="false" type="radio"  checked/>
+                </div>
+            </div>
+            <br/>
+            <div id="businessDetails" class="form-group">
+                <div class="col-12">
+                    <label asp-for="InstallerName">Installer name</label>
+                    <span asp-validation-for="InstallerName" class="text-danger"></span>
+                    <input id="installerName" asp-for="InstallerName" class="form-control"/>
+                </div>
+                <div class="col-12">
+                    <label asp-for="CompanyNumber">Company number</label>
+                    <span asp-validation-for="CompanyNumber" class="text-danger"></span>
+                    <input id="companyNumber" asp-for="CompanyNumber" class="form-control" />
+                </div>
+            </div>
+            <br />
+            <div id="address" class="form-group">
+                <div class="col-12">
+                    <label asp-for="AddressLine1">Address Line 1</label>
+                    <span asp-validation-for="AddressLine1" class="text-danger"></span>
+                    <input id="addressLine1" asp-for="AddressLine1" class="form-control" placeholder="e.g 1234 Main St" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="AddressLine2">Address Line 2</label>
+                    <span asp-validation-for="AddressLine2" class="text-danger"></span>
+                    <input id="addressLine2" asp-for="AddressLine2" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AddressLine3">City/County</label>
+                    <span asp-validation-for="AddressLine3" class="text-danger"></span>
+                    <input id="addressLine3" asp-for="AddressLine3" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="UPRN">UPRN</label>
+                    <span asp-validation-for="UPRN" class="text-danger"></span>
+                    <input id="uprn" asp-for="UPRN" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Postcode">Postcode</label>
+                    <span asp-validation-for="Postcode" class="text-danger"></span>
+                    <input id="postcode" asp-for="Postcode" class="form-control" placeholder="e.g. E14 5NY">
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-page="../Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -6,7 +6,7 @@ GO
 
 CREATE OR ALTER VIEW [dbo].[vw_Dashboard_Installer] AS
 SELECT 
-Ins.RefNumber AS 'AppRefNumber',
+Ins.RefNumber AS 'RefNumber',
 InsD.InstallerName,
 IStat.Description AS 'StatusDescription',
 IStat.Code AS 'StatusCode',

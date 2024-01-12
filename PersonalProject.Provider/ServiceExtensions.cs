@@ -2,10 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalProject.Provider.Data;
-using PersonalProject.Provider.Providers.Implementation.Applications;
-using PersonalProject.Provider.Providers.Implementation.Installers;
-using PersonalProject.Provider.Providers.Interfaces.Applications;
-using PersonalProject.Provider.Providers.Interfaces.Installers;
+using PersonalProject.Provider.Providers.Applications;
+using PersonalProject.Provider.Providers.Installers;
+using PersonalProject.Provider.Providers.Shared;
 
 namespace PersonalProject.Provider;
 
@@ -27,6 +26,7 @@ public static class ServiceExtensions
         services.AddTransient<IUpdateApplicationsProvider, UpdateApplicationsProvider>();
         services.AddTransient<IGetInstallersProvider, GetInstallersProvider>();
         services.AddTransient<IUpdateInstallersProvider, UpdateInstallersProvider>();
+        services.AddTransient<IAuditLogsProvider, AuditLogsProvider>();
 
         return services;
     }

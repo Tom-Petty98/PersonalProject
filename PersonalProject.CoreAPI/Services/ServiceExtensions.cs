@@ -1,7 +1,17 @@
-﻿
+﻿using PersonalProject.CoreAPI.Services.Applications;
+using PersonalProject.CoreAPI.Services.Installers;
+
 namespace PersonalProject.CoreAPI.Services;
 
-public class ServiceExtensions
+public static class ServiceExtensions
 {
+    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddTransient<IGetApplicationsService, GetApplicationsService>();
+        services.AddTransient<IUpdateApplicationService, UpdateApplicationService>();
+        services.AddTransient<IGetInstallersService, GetInstallersService>();
+        services.AddTransient<IUpdateInstallerService, UpdateInstallerService>();
 
+        return services;
+    }
 }

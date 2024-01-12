@@ -19,8 +19,4 @@
     <ProjectReference Include="..\PersonalProject.Provider\PersonalProject.Provider.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Installers\" />
-  </ItemGroup>
-
 </Project>
