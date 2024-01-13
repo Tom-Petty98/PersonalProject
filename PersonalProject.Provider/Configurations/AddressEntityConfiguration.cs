@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
-namespace PersonalProject.Provider.Data.Configurations;
+namespace PersonalProject.Provider.Configurations;
 public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)

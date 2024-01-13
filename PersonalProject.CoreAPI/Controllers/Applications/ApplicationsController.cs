@@ -5,7 +5,8 @@ using PersonalProject.Domain.Request;
 
 namespace PersonalProject.CoreAPI.Controllers.Applications;
 
-[Produces("application/json")]
+[ApiController]
+[Route("Applications")]
 public class ApplicationsController : ControllerBase
 {
     private readonly ILogger<ApplicationsController> _logger;
@@ -22,7 +23,7 @@ public class ApplicationsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/AddApplication")]
+    [Route("AddApplication")]
     public IActionResult AddApplication([FromBody] Application application)
     {
         _logger.LogInformation($"Adding new application for installer {application.InstallerId}");
@@ -42,7 +43,7 @@ public class ApplicationsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/UpdateApplication")]
+    [Route("UpdateApplication")]
     public IActionResult UpdateApplication([FromBody] Application application)
     {
         _logger.LogInformation($"Updating application {application.RefNumber}");
@@ -62,7 +63,7 @@ public class ApplicationsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/GetApplicationByReferenceNumber/{refNumber}")]
+    [Route("GetApplicationByReferenceNumber/{refNumber}")]
     public IActionResult GetApplicationByReferenceNumber(string refNumber)
     {
         var application = _getApplicationsService.GetApplicationByReferenceNumberAsync(refNumber);
@@ -74,21 +75,21 @@ public class ApplicationsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/GetAllApplicationsDashboardView")]
+    [Route("GetAllApplicationsDashboardView")]
     public async Task<IActionResult> GetAllApplicationsDashboardView()
     {
         return Ok(await _getApplicationsService.GetAllApplicationsDashboardView());
     }
 
     [HttpGet]
-    [Route("/GetPagedApplications")]
+    [Route("GetPagedApplications")]
     public async Task<IActionResult> GetPagedApplications([FromBody] DashboardFilter dashboardFilter)
     {
         return Ok(await _getApplicationsService.GetPagedApplications(dashboardFilter));
     }
 
     [HttpGet]
-    [Route("/GetAllApplicationStatuses")]
+    [Route("GetAllApplicationStatuses")]
     public IActionResult GetAllApplicationStatuses()
     {
         return Ok(_getApplicationsService.GetAllApplicationStatusesAsync());

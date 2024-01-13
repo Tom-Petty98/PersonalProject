@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PersonalProject.Provider.Data;
 using PersonalProject.Provider.Providers.Applications;
 using PersonalProject.Provider.Providers.Installers;
 using PersonalProject.Provider.Providers.Shared;

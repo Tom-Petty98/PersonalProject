@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
-namespace PersonalProject.Provider.Data.Configurations;
-public class ApplicationDetailEntityConfiguration : IEntityTypeConfiguration<ApplicationDetail>
+namespace PersonalProject.Provider.Configurations;
+public class InstallerEntityConfiguration : IEntityTypeConfiguration<Installer>
 {
-    public void Configure(EntityTypeBuilder<ApplicationDetail> builder)
+    public void Configure(EntityTypeBuilder<Installer> builder)
     {
-        builder.Property(b => b.PropertyOwnerEmail)
-            .HasMaxLength(255)
+        builder.Property(b => b.RefNumber)
+            .HasMaxLength(11)
             .IsRequired();
 
         builder.Property(b => b.CreatedBy)

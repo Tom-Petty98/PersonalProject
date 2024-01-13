@@ -1,6 +1,5 @@
 ﻿using PersonalProject.Domain.Entities;
 using PersonalProject.Domain.Request;
-using PersonalProject.Provider.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace PersonalProject.Provider.Providers.Applications;
@@ -28,7 +27,7 @@ public class GetApplicationsProvider : IGetApplicationsProvider
 
     public async Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView()
     {
-        return await _context.ApplicationDashboards.OrderByDescending(x => x.AppRefNumber).ToListAsync();
+        return await _context.ApplicationDashboards.OrderByDescending(x => x.RefNumber).ToListAsync();
     }
 
     public async Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync()

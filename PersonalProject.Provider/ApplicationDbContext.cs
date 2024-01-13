@@ -1,8 +1,8 @@
 ﻿using PersonalProject.Domain.Entities;
-using PersonalProject.Provider.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
+using PersonalProject.Provider.Configurations;
 
-namespace PersonalProject.Provider.Data;
+namespace PersonalProject.Provider;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -32,11 +32,11 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationStatusEntityConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationEntityConfiguration).Assembly);
 
         modelBuilder.Entity<ApplicationStatus>().HasIndex(b => b.Code).HasDatabaseName("AS_Index_Code");
-        modelBuilder.Entity<InstallerStatus>().HasIndex(b => b.Code).HasDatabaseName("AS_Index_Code");
-        modelBuilder.Entity<UserInviteStatus>().HasIndex(b => b.Code).HasDatabaseName("AS_Index_Code");
+        modelBuilder.Entity<InstallerStatus>().HasIndex(b => b.Code).HasDatabaseName("IS_Index_Code");
+        modelBuilder.Entity<UserInviteStatus>().HasIndex(b => b.Code).HasDatabaseName("UIS_Index_Code");
 
         modelBuilder.Entity<ApplicationDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Application"); });
         modelBuilder.Entity<InstallerDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Installer"); });

@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
-namespace PersonalProject.Provider.Data.Configurations;
-public class ApplicationStatusEntityConfiguration : IEntityTypeConfiguration<ApplicationStatus>
+namespace PersonalProject.Provider.Configurations;
+public class UserInviteStatusEntityConfiguration : IEntityTypeConfiguration<UserInviteStatus>
 {
-    public void Configure(EntityTypeBuilder<ApplicationStatus> builder)
+    public void Configure(EntityTypeBuilder<UserInviteStatus> builder)
     {
         builder.Property(b => b.Description)
             .HasMaxLength(255)

@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Applications\" />
-    <Folder Include="Services\Implementation\" />
   </ItemGroup>
 
   <ItemGroup>

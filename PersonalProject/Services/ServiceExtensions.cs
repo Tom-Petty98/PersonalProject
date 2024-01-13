@@ -1,9 +1,9 @@
-﻿using PersonalProject.InternalPortal.Services.Applications;
+﻿using PersonalProject.Domain.Request;
+using PersonalProject.InternalPortal.Services.Applications;
+using PersonalProject.InternalPortal.Services.Helpers;
+using PersonalProject.InternalPortal.Services.Implementation;
 using PersonalProject.InternalPortal.Services.Installers;
-using PersonalProject.InternalPortal.Services.Interfaces;
 using Polly;
-using Polly.Extensions.Http;
-using Polly.Timeout;
 
 namespace PersonalProject.InternalPortal.Services;
 
@@ -11,24 +11,30 @@ public static class ServiceExtensions
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration config)
     {
-        var retryPolicy = HttpPolicyExtensions
-          .HandleTransientHttpError()
-          .Or<TimeoutRejectedException>() // thrown by Polly's TimeoutPolicy if the inner execution times out
-          .RetryAsync(3);
-
-        var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);
-
         services.AddHttpClient("CoreAPI", c =>
-            {
-                c.BaseAddress = new Uri(config["applicationUrl"]!);
-                c.DefaultRequestHeaders.Add("Accept", "application/json");
-            })
-            .AddPolicyHandler(retryPolicy)
-            .AddPolicyHandler(timeoutPolicy);
+        {
+            c.BaseAddress = new Uri(config["applicationUrl"]!);
+            c.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
 
-        services.AddTransient<IApplicationsService, GetApplicationsService>();
-        services.AddTransient<IInstallerService, InstallerService>();
+        services.AddPollyPolicies(config);
+
+        services.AddTransient<IGetApplicationsService, GetApplicationsService>();
+        services.AddTransient<IUpdateApplicationsService, UpdateApplicationsService>();
+        services.AddTransient<IGetInstallerService, GetInstallerService>();
+        services.AddTransient<IUpdateInstallerService, UpdateInstallerService>();
 
         return services;
+    }
+
+    private static void AddPollyPolicies(this IServiceCollection services, IConfiguration config)
+    {
+        var pollyConfig = config.GetSection("PollySettings");
+        var policiesToAdd = new Dictionary<string, IAsyncPolicy<HttpResponseMessage>>
+        {
+            {PollyContextKeys.RetryHttp500, PollyExtensions.Http500RetryPolicy(pollyConfig)}
+        };
+
+        services.AddPollyPolicies(policiesToAdd);
     }
 }

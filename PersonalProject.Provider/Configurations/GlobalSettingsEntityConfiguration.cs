@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 using System.Reflection.Emit;
 
-namespace PersonalProject.Provider.Data.Configurations;
+namespace PersonalProject.Provider.Configurations;
 public class GlobalSettingsEntityConfiguration : IEntityTypeConfiguration<GlobalSettings>
 {
     public void Configure(EntityTypeBuilder<GlobalSettings> builder)

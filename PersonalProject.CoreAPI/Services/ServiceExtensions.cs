@@ -5,7 +5,7 @@ namespace PersonalProject.CoreAPI.Services;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
         services.AddTransient<IGetApplicationsService, GetApplicationsService>();
         services.AddTransient<IUpdateApplicationService, UpdateApplicationService>();

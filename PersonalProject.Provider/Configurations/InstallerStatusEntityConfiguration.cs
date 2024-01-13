@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
-namespace PersonalProject.Provider.Data.Configurations;
+namespace PersonalProject.Provider.Configurations;
 public class InstallerStatusEntityConfiguration : IEntityTypeConfiguration<InstallerStatus>
 {
     public void Configure(EntityTypeBuilder<InstallerStatus> builder)

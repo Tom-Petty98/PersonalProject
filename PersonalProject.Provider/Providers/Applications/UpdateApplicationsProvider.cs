@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalProject.Domain.Entities;
-using PersonalProject.Provider.Data;
 
 
 namespace PersonalProject.Provider.Providers.Applications;

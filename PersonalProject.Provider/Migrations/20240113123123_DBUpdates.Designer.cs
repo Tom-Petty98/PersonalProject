@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PersonalProject.Provider;
 
 #nullable disable
 
 namespace PersonalProject.Provider.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125190120_CoreDBStructure")]
-    partial class CoreDBStructure
+    [Migration("20240113123123_DBUpdates")]
+    partial class DBUpdates
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +81,9 @@ namespace PersonalProject.Provider.Migrations
                     b.Property<bool?>("FlaggedForAudit")
                         .HasColumnType("bit");
 
+                    b.Property<int>("InstallerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -109,9 +113,6 @@ namespace PersonalProject.Provider.Migrations
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.ApplicationDashboard", b =>
                 {
-                    b.Property<string>("AppRefNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("FlaggedForAudit")
                         .HasColumnType("bit");
 
@@ -119,6 +120,9 @@ namespace PersonalProject.Provider.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Postcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("ReviewRecommendation")
@@ -254,7 +258,10 @@ namespace PersonalProject.Provider.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("EntityId")
+                    b.Property<int?>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntityType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EventTimeStamp")
@@ -264,10 +271,16 @@ namespace PersonalProject.Provider.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ResultStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdateMethodMessage")
                         .IsRequired()
                         .HasMaxLength(127)
                         .HasColumnType("nvarchar(127)");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -515,7 +528,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
-                        .HasDatabaseName("AS_Index_Code");
+                        .HasDatabaseName("IS_Index_Code");
 
                     b.ToTable("InstallerStatuses");
                 });
@@ -706,7 +719,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
-                        .HasDatabaseName("AS_Index_Code");
+                        .HasDatabaseName("UIS_Index_Code");
 
                     b.ToTable("UserInviteStatuses");
                 });

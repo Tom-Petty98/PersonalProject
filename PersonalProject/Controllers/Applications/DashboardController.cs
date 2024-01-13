@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PersonalProject.InternalPortal.Services.Interfaces;
+using PersonalProject.InternalPortal.Services.Applications;
 using PersonalProject.Models;
 using System.Diagnostics;
 
@@ -8,7 +8,7 @@ namespace PersonalProject.Controllers.Applications
     public class DashboardController : Controller
     {
         private readonly ILogger<DashboardController> _logger;
-        private readonly IApplicationsService _applicationsService;
+        private readonly IGetApplicationsService _applicationsService;
 
         public DashboardController(ILogger<DashboardController> logger)
         {

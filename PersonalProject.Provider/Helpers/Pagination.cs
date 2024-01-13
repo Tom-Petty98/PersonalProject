@@ -30,7 +30,7 @@ public static class Pagination
         if(!string.IsNullOrEmpty(searchBy) && searchBy.Length >= 3)
         {
             applications = applications.Where(c => (!string.IsNullOrEmpty(c.Postcode) && c.Postcode.Contains(searchBy))
-               || (!string.IsNullOrEmpty(c.AppRefNumber)) && c.AppRefNumber.Contains(searchBy));
+               || (!string.IsNullOrEmpty(c.RefNumber)) && c.RefNumber.Contains(searchBy));
         }
 
         return applications;
@@ -45,9 +45,9 @@ public static class Pagination
             ? applications.OrderByDescending(x => x.Postcode)
             : applications.OrderBy(x => x.Postcode),
 
-            "AppRefNumber" => orderByDescending
-            ? applications.OrderByDescending(x => x.AppRefNumber)
-            : applications.OrderBy(x => x.AppRefNumber),
+            "RefNumber" => orderByDescending
+            ? applications.OrderByDescending(x => x.RefNumber)
+            : applications.OrderBy(x => x.RefNumber),
 
             "StatusDescription" => orderByDescending
             ? applications.OrderByDescending(x => x.StatusDescription)
@@ -57,7 +57,7 @@ public static class Pagination
             ? applications.OrderByDescending(x => x.FlaggedForAudit)
             : applications.OrderBy(x => x.FlaggedForAudit),
 
-            _ => applications.OrderByDescending(x => x.AppRefNumber)
+            _ => applications.OrderByDescending(x => x.RefNumber)
         };
 
         return sortedApplications;

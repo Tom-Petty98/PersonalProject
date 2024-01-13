@@ -1,5 +1,7 @@
 ﻿using PersonalProject.Domain.Entities;
 using PersonalProject.Domain.Request;
+using PersonalProject.InternalPortal.Services.Helpers;
+using PersonalProject.InternalPortal.Services.Installers;
 using Polly.Registry;
 
 namespace PersonalProject.InternalPortal.Services.Applications;
@@ -14,15 +16,14 @@ public interface IGetApplicationsService
     Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter);
 }
 
-public class GetApplicationsService : IGetApplicationsService
+public class GetApplicationsService : BaseRequestsClient<GetApplicationsService>, IGetApplicationsService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IPolicyRegistry<string> _polySettings;
     private const string _clientName = "CoreAPI";
-    public GetApplicationsService(IHttpClientFactory httpClientFactory, IPolicyRegistry<string> polySettings)
+    public GetApplicationsService(IHttpClientFactory httpClientFactory, ILogger<GetApplicationsService> logger, IPolicyRegistry<string> polySettings)
+        : base(polySettings, logger)
     {
         _httpClientFactory = httpClientFactory;
-        _polySettings = polySettings;
     }
 
     private HttpClient BuildClient() => _httpClientFactory.CreateClient(_clientName);

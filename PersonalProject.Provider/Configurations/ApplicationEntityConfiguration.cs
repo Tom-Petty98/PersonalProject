@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
-namespace PersonalProject.Provider.Data.Configurations;
-public class InstallerEntityConfiguration : IEntityTypeConfiguration<Installer>
+namespace PersonalProject.Provider.Configurations;
+public class ApplicationEntityConfiguration : IEntityTypeConfiguration<Application>
 {
-    public void Configure(EntityTypeBuilder<Installer> builder)
+    public void Configure(EntityTypeBuilder<Application> builder)
     {
         builder.Property(b => b.RefNumber)
             .HasMaxLength(11)

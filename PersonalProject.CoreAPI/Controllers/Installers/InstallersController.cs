@@ -5,7 +5,8 @@ using PersonalProject.Domain.Request;
 
 namespace PersonalProject.CoreAPI.Controllers.Installers;
 
-[Produces("Installer/json")]
+[ApiController]
+[Route("Installers")]
 public class InstallersController : ControllerBase
 {
     private readonly ILogger<InstallersController> _logger;
@@ -22,14 +23,14 @@ public class InstallersController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/AddInstaller")]
-    public IActionResult AddInstaller([FromBody] Installer installer)
+    [Route("AddInstaller")]
+    public async Task<IActionResult> AddInstaller([FromBody] Installer installer)
     {
         _logger.LogInformation($"Adding new installer {installer.InstallerDetail.InstallerName}");
         
         try
         {
-            var newApp = _updateInstallerService.AddInstaller(installer);
+            var newApp = await _updateInstallerService.AddInstaller(installer);
             _logger.LogInformation($"Sucessfully created Installer {installer.RefNumber}");
             return Ok(newApp);
         }
@@ -42,14 +43,14 @@ public class InstallersController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/UpdateInstaller")]
-    public IActionResult UpdateInstaller([FromBody] Installer installer)
+    [Route("UpdateInstaller")]
+    public async Task <IActionResult> UpdateInstaller([FromBody] Installer installer)
     {
         _logger.LogInformation($"Updating Installer {installer.RefNumber}");
 
         try
         {
-            var updatedApp = _updateInstallerService.AddInstaller(installer);
+            var updatedApp = await _updateInstallerService.AddInstaller(installer);
             _logger.LogInformation($"Sucessfully updated onstaller {installer.RefNumber}");
             return Ok(updatedApp);
         }
@@ -62,10 +63,10 @@ public class InstallersController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/GetInstallerByReferenceNumber/{refNumber}")]
-    public IActionResult GetInstallerByReferenceNumber(string refNumber)
+    [Route("GetInstallerByReferenceNumber/{refNumber}")]
+    public async Task<IActionResult> GetInstallerByReferenceNumber(string refNumber)
     {
-        var Installer = _getInstallersService.GetInstallerByReferenceNumberAsync(refNumber);
+        var Installer = await _getInstallersService.GetInstallerByReferenceNumberAsync(refNumber);
 
         if (Installer == null) 
             return NotFound($"No Installer found for ref number {refNumber}");
@@ -74,23 +75,23 @@ public class InstallersController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/GetAllInstallersDashboardView")]
+    [Route("GetAllInstallersDashboardView")]
     public async Task<IActionResult> GetAllInstallersDashboardView()
     {
         return Ok(await _getInstallersService.GetAllInstallersDashboardView());
     }
 
     [HttpGet]
-    [Route("/GetPagedInstallers")]
+    [Route("GetPagedInstallers")]
     public async Task<IActionResult> GetPagedInstallers([FromBody] DashboardFilter dashboardFilter)
     {
         return Ok(await _getInstallersService.GetPagedInstallers(dashboardFilter));
     }
 
     [HttpGet]
-    [Route("/GetAllInstallerStatuses")]
-    public IActionResult GetAllInstallerStatuses()
+    [Route("GetAllInstallerStatuses")]
+    public async Task<IActionResult> GetAllInstallerStatuses()
     {
-        return Ok(_getInstallersService.GetAllInstallerStatusesAsync());
+        return Ok(await _getInstallersService.GetAllInstallerStatusesAsync());
     }
 }

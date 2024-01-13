@@ -1,6 +1,5 @@
 ﻿using PersonalProject.Domain.Entities;
 using PersonalProject.Domain.Request;
-using PersonalProject.Provider.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace PersonalProject.Provider.Providers.Installers;
@@ -33,7 +32,8 @@ public class GetInstallersProvider : IGetInstallersProvider
 
     public async Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync()
     {
-        return await _context.InstallerStatuses.OrderBy(x => x.SortOrder).ToListAsync();
+        return await _context.InstallerStatuses.AsNoTracking()
+            .OrderBy(x => x.SortOrder).ToListAsync().ConfigureAwait(false);
     }
 
     public async Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber)

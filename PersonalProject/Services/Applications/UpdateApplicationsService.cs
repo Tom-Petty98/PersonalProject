@@ -1,6 +1,5 @@
 ﻿using PersonalProject.Domain.Entities;
-using PersonalProject.Domain.Request;
-using PersonalProject.InternalPortal.Services.Interfaces;
+using PersonalProject.InternalPortal.Services.Helpers;
 using Polly.Registry;
 
 namespace PersonalProject.InternalPortal.Services.Implementation;
@@ -14,15 +13,14 @@ public interface IUpdateApplicationsService
     Task<bool> UpdateApplicationDetail(ApplicationDetail applicationDetail);
 }
 
-public class ApplicationsService : IUpdateApplicationsService
+public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsService>, IUpdateApplicationsService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IPolicyRegistry<string> _polySettings;
     private const string _clientName = "CoreAPI";
-    public ApplicationsService(IHttpClientFactory httpClientFactory, IPolicyRegistry<string> polySettings)
+    public UpdateApplicationsService(IHttpClientFactory httpClientFactory, ILogger<UpdateApplicationsService> logger, IPolicyRegistry<string> polySettings)
+        : base(polySettings, logger)
     {
         _httpClientFactory = httpClientFactory;
-        _polySettings = polySettings;
     }
 
     private HttpClient BuildClient() => _httpClientFactory.CreateClient(_clientName);

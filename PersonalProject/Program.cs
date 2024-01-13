@@ -1,7 +1,10 @@
+using PersonalProject.InternalPortal.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -22,6 +25,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Insatllers/DashboardController}/{action=Index}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

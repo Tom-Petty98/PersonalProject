@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AppRefNumber)
+                        @Html.DisplayFor(modelItem => item.RefNumber)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Postcode)
@@ -47,8 +47,8 @@
                         @Html.DisplayFor(modelItem => item.LastStatusChangeDate)
                     </td>
                     <td>
-                        <a asp-page="./Applications/Edit" asp-route-refNumber="@item.AppRefNumber">Edit</a> |
-                        <a asp-page="./Applications/Details" asp-route-refNumber="@item.AppRefNumber">Details</a>
+                        <a asp-page="./Applications/Edit" asp-route-refNumber="@item.RefNumber">Edit</a> |
+                        <a asp-page="./Applications/Details" asp-route-refNumber="@item.RefNumber">Details</a>
                     </td>
                 </tr>
             }
