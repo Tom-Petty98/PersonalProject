@@ -8,5 +8,5 @@ public class InstallerStatusHistory
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string StatusChangedBy { get; set; } = string.Empty;
-    public virtual ApplicationStatus ApplicationStatus { get; set; }
+    public virtual InstallerStatus InstallerStatus { get; set; }
 }

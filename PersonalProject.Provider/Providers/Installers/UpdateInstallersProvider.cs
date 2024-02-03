@@ -30,15 +30,17 @@ public class UpdateInstallersProvider : IUpdateInstallersProvider
                 await using var transaction = await _context.Database.BeginTransactionAsync();
 
                 var globalsettings = _context.GlobalSettings.First();
-                var nextAppNumber = globalsettings.NextInstallerNumber;
+                var nextInsNumber = globalsettings.NextInstallerNumber;
 
                 globalsettings.NextInstallerNumber += 1;
 
                 _context.GlobalSettings.Update(globalsettings);
 
-                installer.RefNumber = $"App{nextAppNumber}";
-                var id = _context.Installers.Add(installer);
+                installer.RefNumber = $"Ins{nextInsNumber}";
+                var addedInstaller = _context.Installers.Add(installer).Entity;
+                await _context.SaveChangesAsync();
 
+                UpsertStatusHistory(addedInstaller);
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
@@ -63,5 +65,25 @@ public class UpdateInstallersProvider : IUpdateInstallersProvider
     public Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
     {
         throw new NotImplementedException();
+    }
+
+    private void UpsertStatusHistory(Installer installer)
+    {
+        var currentStatusHistory = _context.InstallerStatusHistories.FirstOrDefault(x => x.EndDate == null);
+
+        if (currentStatusHistory != null)
+        {
+            currentStatusHistory.EndDate = DateTime.UtcNow;
+            _context.InstallerStatusHistories.Update(currentStatusHistory);
+        }
+
+        var installerStatusHistory = new InstallerStatusHistory
+        {
+            InstallerId = installer.Id,
+            InstallerStatusId = installer.StatusId,
+            StartDate = DateTime.UtcNow,
+            StatusChangedBy = installer.LastUpdatedBy ?? installer.CreatedBy
+        };
+        _context.InstallerStatusHistories.Add(installerStatusHistory);
     }
 }

@@ -1,4 +1,5 @@
 ﻿namespace PersonalProject.Domain.Entities;
+
 public class ApplicationDashboard
 {
     public string? RefNumber { get; set; }

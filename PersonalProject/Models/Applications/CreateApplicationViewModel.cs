@@ -1,18 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
-namespace PersonalProject.InternalPortal.Models.Installers;
+namespace PersonalProject.InternalPortal.Models.Applications;
 
-public class CreateInstallerViewModel
+public class CreateApplicationViewModel
 {
     public bool? FlaggedForAudit { get; set; }
-
-    [Required(ErrorMessage = "Installer name is required"), StringLength(255, MinimumLength = 2)]
-    [RegularExpression(@"^[A-Z][a-zA-Z""'\s-]*$")]
-    public string InstallerName { get; set; } = string.Empty;
-    public int CompanyNumber { get; set; }
-    //public bool InstallerHasAddress { get; set; } = false;
-    [Required(ErrorMessage = "Postcode is required")]
+    public int InstallerId { get; set; }
+    public DateTime? SubmittedDate { get; set; }
+    [Required(ErrorMessage = "Property owner email is required"), StringLength(255, MinimumLength = 2)]
+    [EmailAddress]
+    public string PropertyOwnerEmail { get; set; } = string.Empty;
     public string Postcode { get; set; } = string.Empty;
     public int UPRN { get; set; }
     [Required(ErrorMessage = "Address Line 1 is required"), StringLength(255, MinimumLength = 2)]

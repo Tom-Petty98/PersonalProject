@@ -39,6 +39,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<UserInviteStatus>().HasIndex(b => b.Code).HasDatabaseName("UIS_Index_Code");
 
         modelBuilder.Entity<ApplicationDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Application"); });
-        modelBuilder.Entity<InstallerDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Installer"); });
+        modelBuilder.Entity<InstallerDashboard>().ToView("vw_Dashboard_Installer").HasNoKey();
+        //modelBuilder.Entity<InstallerDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Installer"); });
     }
 }

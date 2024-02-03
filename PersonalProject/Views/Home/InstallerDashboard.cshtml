@@ -1,5 +1,5 @@
-﻿@page
-@model IEnumerable<PersonalProject.Domain.Entities.InstallerDashboard>
+﻿@using PersonalProject.InternalPortal.Services.Helpers
+@model IEnumerable<PersonalProject.Domain.Entities.InstallerDashboard>?
 @{
     ViewData["Title"] = "Home page";
 }
@@ -7,7 +7,7 @@
 <h1>Installers</h1>
 
 <p>
-    <a asp-page="Installers/Create">Create New</a>
+    <a href="Installer/Create">Create New</a>
 </p>
 
 <table class="table">
@@ -44,11 +44,11 @@
                         @Html.DisplayFor(modelItem => item.ReviewRecommendation)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastStatusChangeDate)
+                        @item.LastStatusChangeDate.ToUiDateTimeFormat()
                     </td>
                     <td>
-                        <a asp-page="./Installers/Edit" asp-route-refNumber="@item.RefNumber">Edit</a> |
-                        <a asp-page="./Installers/Details" asp-route-refNumber="@item.RefNumber">Details</a>
+                        <a href="/Installers/Index?refNumber=@item.RefNumber">Details</a> |
+                        <a href="/Installer/Edit?refNumber=@item.RefNumber">Edit</a>
                     </td>
                 </tr>
             }

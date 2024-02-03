@@ -78,7 +78,8 @@ public class InstallersController : ControllerBase
     [Route("GetAllInstallersDashboardView")]
     public async Task<IActionResult> GetAllInstallersDashboardView()
     {
-        return Ok(await _getInstallersService.GetAllInstallersDashboardView());
+        var installerDashboard = await _getInstallersService.GetAllInstallersDashboardView();
+        return Ok(installerDashboard);
     }
 
     [HttpGet]

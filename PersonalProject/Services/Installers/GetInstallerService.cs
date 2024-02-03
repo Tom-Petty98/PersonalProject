@@ -31,7 +31,7 @@ public class GetInstallerService : BaseRequestsClient<GetInstallerService>, IGet
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetAllInstallersDashboardView));
         var target = "Installers/GetAllInstallersDashboardView";
 
-        var responseObject = await GetAsync<IEnumerable<InstallerDashboard>>(httpClient, target, null, null);
+        var responseObject = await GetAsync<List<InstallerDashboard>>(httpClient, target, null, null);
         return responseObject ?? new List<InstallerDashboard>();
     }
 

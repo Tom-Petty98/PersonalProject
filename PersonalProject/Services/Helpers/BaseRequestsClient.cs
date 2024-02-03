@@ -12,6 +12,7 @@ public abstract class BaseRequestsClient<ILogCategory>
 {
     private readonly IPolicyRegistry<string> _policyRegistry;
     private readonly ILogger<ILogCategory> _logger;
+    private JsonSerializerOptions _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
     protected BaseRequestsClient(IPolicyRegistry<string> policyRegistry, ILogger<ILogCategory> logger)
     {
@@ -29,7 +30,7 @@ public abstract class BaseRequestsClient<ILogCategory>
             BadRequestException ex;
             try
             {
-                var validationProblemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseContentString);
+                var validationProblemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseContentString, _options);
                 string message = validationProblemDetails!.Title!;
                 HttpStatusCode value = (HttpStatusCode)validationProblemDetails.Status!.Value;
                 IDictionary<string, string[]> errors = validationProblemDetails.Errors;
@@ -148,7 +149,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     {
         try
         {
-            var responseObject = JsonSerializer.Deserialize<T>(input);
+            var responseObject = JsonSerializer.Deserialize<T>(input, _options);
             return responseObject;
         }
         catch
