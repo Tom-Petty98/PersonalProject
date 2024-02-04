@@ -2,10 +2,9 @@
 
 namespace PersonalProject.InternalPortal.Models.Installers;
 
-public class CreateInstallerViewModel
+public class EditInstallerDetailsViewModel
 {
-    public bool? FlaggedForAudit { get; set; }
-
+    public string RefNumber { get; set; } = string.Empty;
     [Required(ErrorMessage = "Installer name is required"), StringLength(255, MinimumLength = 2)]
     [RegularExpression(@"^[A-Z][a-zA-Z""'\s-]*$")]
     public string InstallerName { get; set; } = string.Empty;
@@ -20,4 +19,6 @@ public class CreateInstallerViewModel
     public string? AddressLine2 { get; set; }
     [StringLength(127, MinimumLength = 2)]
     public string? AddressLine3 { get; set; }
+    public string LastEditedBy { get; set; } = string.Empty;
+    public DateTime LastEditedDate { get; set; }
 }

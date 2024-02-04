@@ -62,9 +62,18 @@ public class UpdateInstallersProvider : IUpdateInstallersProvider
         return true;
     }
 
-    public Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
+    public async Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Attach(installerDetail).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void UpsertStatusHistory(Installer installer)

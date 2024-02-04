@@ -7,7 +7,7 @@ namespace PersonalProject.InternalPortal.Services.Installers;
 public interface IUpdateInstallerService
 {
     Task<Installer> AddInstaller(Installer installer);
-    Task<Installer> UpdateInstaller(Installer installer);
+    Task<bool> UpdateInstaller(Installer installer);
     Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail);
 }
 
@@ -33,18 +33,21 @@ public class UpdateInstallerService : BaseRequestsClient<GetInstallerService>, I
             ?? throw new Exception("Null response recieved");
     }
 
-    public async Task<Installer> UpdateInstaller(Installer installer)
+    public async Task<bool> UpdateInstaller(Installer installer)
     {
         var httpClient = BuildClient();
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateInstaller));
         var target = "Installers/UpdateInstaller";
 
-        return await PostAsync<Installer, Installer>(httpClient, target, installer, null, null)
-            ?? throw new Exception("Null response recieved");
+        return await PostAsync<bool, Installer>(httpClient, target, installer, null, null);
     }
 
-    public Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
+    public async Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateInstallerDetail));
+        var target = "Installers/UpdateInstallerDetail";
+
+        return await PostAsync<bool, InstallerDetail>(httpClient, target, installerDetail, null, null);
     }
 }

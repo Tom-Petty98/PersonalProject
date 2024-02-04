@@ -7,6 +7,7 @@ public interface IUpdateInstallerService
 {
     Task<Installer> AddInstaller(Installer installer);
     Task<bool> UpdateInstaller(Installer installer);
+    Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail);
 }
 public class UpdateInstallerService : IUpdateInstallerService
 {
@@ -17,9 +18,12 @@ public class UpdateInstallerService : IUpdateInstallerService
         _updateInstallersProvider = InstallersProvider;
     }
 
-    public async Task<Installer> AddInstaller(Installer Installer)
-    => await _updateInstallersProvider.AddInstaller(Installer);
+    public async Task<Installer> AddInstaller(Installer installer)
+    => await _updateInstallersProvider.AddInstaller(installer);
 
-    public async Task<bool> UpdateInstaller(Installer Installer)
-        => await _updateInstallersProvider.UpdateInstaller(Installer);
+    public async Task<bool> UpdateInstaller(Installer installer)
+        => await _updateInstallersProvider.UpdateInstaller(installer);
+
+    public async Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
+        => await _updateInstallersProvider.UpdateInstallerDetail(installerDetail);
 }

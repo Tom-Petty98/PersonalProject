@@ -31,12 +31,12 @@ public class InstallersController : ControllerBase
         try
         {
             var newApp = await _updateInstallerService.AddInstaller(installer);
-            _logger.LogInformation($"Sucessfully created Installer {installer.RefNumber}");
+            _logger.LogInformation($"Sucessfully created installer {installer.RefNumber}");
             return Ok(newApp);
         }
         catch (Exception ex)
         {
-            const string message = "Unable to add Installer";
+            const string message = "Unable to add installer";
             _logger.LogError(ex, message);
             return BadRequest($"{message} - {ex.Message}");
         }
@@ -44,14 +44,34 @@ public class InstallersController : ControllerBase
 
     [HttpPost]
     [Route("UpdateInstaller")]
-    public async Task <IActionResult> UpdateInstaller([FromBody] Installer installer)
+    public async Task<IActionResult> UpdateInstaller([FromBody] Installer installer)
     {
         _logger.LogInformation($"Updating Installer {installer.RefNumber}");
 
         try
         {
-            var updatedApp = await _updateInstallerService.AddInstaller(installer);
-            _logger.LogInformation($"Sucessfully updated onstaller {installer.RefNumber}");
+            var updatedApp = await _updateInstallerService.UpdateInstaller(installer);
+            _logger.LogInformation($"Sucessfully updated installer {installer.RefNumber}");
+            return Ok(updatedApp);
+        }
+        catch (Exception ex)
+        {
+            const string message = "Unable to update installer";
+            _logger.LogError(ex, message);
+            return BadRequest($"{message} - {ex.Message}");
+        }
+    }
+
+    [HttpPost]
+    [Route("UpdateInstallerDetail")]
+    public async Task<IActionResult> UpdateInstallerDetail([FromBody] InstallerDetail installerDetail)
+    {
+        _logger.LogInformation($"Updating installer detail {installerDetail.Id}");
+
+        try
+        {
+            var updatedApp = await _updateInstallerService.UpdateInstallerDetail(installerDetail);
+            _logger.LogInformation($"Sucessfully updated installer detail {installerDetail.Id}");
             return Ok(updatedApp);
         }
         catch (Exception ex)

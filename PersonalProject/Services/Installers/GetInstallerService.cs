@@ -49,9 +49,9 @@ public class GetInstallerService : BaseRequestsClient<GetInstallerService>, IGet
     {
         var httpClient = BuildClient();
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetInstallerByReferenceNumberAsync));
-        var target = "Installers/GetInstallerByReferenceNumber";
+        var target = $"Installers/GetInstallerByReferenceNumber/{refNumber}";
 
-        return await GetAsync<Installer>(httpClient, target, null, null);
+        return await GetAsync<Installer?>(httpClient, target, null, null);
     }
 
     public async Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter)
