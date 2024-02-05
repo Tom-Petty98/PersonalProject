@@ -1,0 +1,107 @@
+﻿@using PersonalProject.InternalPortal.Models.Installers
+@model EditInstallerStatusViewModel
+@{
+    ViewData["Title"] = "Edit Installer Status";
+}
+
+<h1>@Model.InstallerDetail!.InstallerName</h1>
+<h3>@Model.RefNumber</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h2>Edit Installer Status</h2>
+        <br />
+
+        <p><strong>Last edited by: </strong>@Model.LastEditedBy</p>
+        <p><strong>Last edited date: </strong>@Model.LastEditedDate</p>
+
+        <form method="post" asp-action="EditStatus">      
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="RefNumber" type="hidden">
+
+            <div class="form-group">
+                <label asp-for="StatusId" is="status-heading" class="control-label">Status</label>
+                <select class="form-select" asp-for="StatusId">
+                    @foreach (var status in Model.InstallerStatuses!)
+                    {
+                        <option value="@status.Id">@status.Description</option>
+                    }
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="ReviewRecommendation" class="control-label">Review Recommedation</label>
+                <br />
+                <div class="form-check form-check-inline">
+                    <label asp-for="ReviewRecommendation" class="form-check-label">Pass</label>
+                    <input asp-for="ReviewRecommendation" class="form-check-input" value="true" type="radio" />
+                </div>
+                <div class="form-check form-check-inline">
+                    <label asp-for="ReviewRecommendation" class="form-check-label">Fail</label>
+                    <input asp-for="ReviewRecommendation" class="form-check-input" value="false" type="radio" />
+                </div>
+                <div class="form-check form-check-inline">
+                    <label asp-for="ReviewRecommendation" class="form-check-label">None</label>
+                    <input asp-for="ReviewRecommendation" class="form-check-input" value="" type="radio" checked />
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="FlaggedForAudit" class="control-label">Flagged For Audit</label>
+                <br />
+                <div class="form-check form-check-inline">
+                    <label asp-for="FlaggedForAudit" class="form-check-label">Yes</label>
+                    <input asp-for="FlaggedForAudit" class="form-check-input" value="true" type="radio" />
+                </div>
+                <div class="form-check form-check-inline">
+                    <label asp-for="FlaggedForAudit" class="form-check-label">No</label>
+                    <input asp-for="FlaggedForAudit" class="form-check-input" value="false" type="radio" checked />
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Edit Status" class="btn btn-primary" />
+            </div>        
+        </form>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <h2>Installer Details</h2>
+
+        @{
+            string editedBy = Model.InstallerDetail.LastUpdatedBy ?? Model.InstallerDetail.CreatedBy;
+            string editedDate = Model.InstallerDetail.LastUpdatedBy ?? Model.InstallerDetail.CreatedBy;
+
+            <p><strong>Last edited by: </strong>@editedBy</p>
+            <p><strong>Last edited date: </strong>@editedDate</p>
+        }
+        <p><strong>Company number: </strong>@Model.InstallerDetail.CompanyNumber</p>
+        @if(Model.InstallerDetail.InstallerAddress != null)
+        {
+            <p><strong>Postcode: </strong>@Model.InstallerDetail.InstallerAddress.Postcode</p>
+            <p><strong>UPRN: </strong>@Model.InstallerDetail.InstallerAddress.UPRN</p>
+            <p><strong>Address Line 1: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine1</p>
+            @if (Model.InstallerDetail.InstallerAddress.AddressLine2 != null)
+            {
+                <p><strong>Address Line 2: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine2</p>
+            }
+            @if (Model.InstallerDetail.InstallerAddress.AddressLine3 != null)
+            {
+                <p><strong>Address Line 3: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine3</p>
+            }
+        }
+        <a href="/Installer/EditDetails?refNumber=@Model.RefNumber">Edit Details</a>
+            
+    </div>
+</div>
+<br />
+<div>
+    <a href="/">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

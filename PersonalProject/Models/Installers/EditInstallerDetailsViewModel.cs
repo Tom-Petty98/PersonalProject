@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PersonalProject.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalProject.InternalPortal.Models.Installers;
 
 public class EditInstallerDetailsViewModel
 {
+    public string InstallerStatusDescription { get; set; } = string.Empty;
     public string RefNumber { get; set; } = string.Empty;
     [Required(ErrorMessage = "Installer name is required"), StringLength(255, MinimumLength = 2)]
     [RegularExpression(@"^[A-Z][a-zA-Z""'\s-]*$")]

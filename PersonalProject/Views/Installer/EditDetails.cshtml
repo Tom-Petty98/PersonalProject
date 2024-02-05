@@ -1,0 +1,80 @@
+﻿@using PersonalProject.InternalPortal.Models.Installers
+@model EditInstallerDetailsViewModel
+@{
+    ViewData["Title"] = "Edit Installer Details";
+}
+
+<h1>Edit @Model.InstallerName Details</h1>
+<br />
+<p><strong>Reference number: </strong>@Model.RefNumber</p>
+<p><strong>Current installer Status: </strong>@Model.InstallerStatusDescription</p>
+<br />
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h2>Edit Installer Details</h2>       
+
+        <p><strong>Last edited by: </strong>@Model.LastEditedBy</p>
+        <p><strong>Last edited date: </strong>@Model.LastEditedDate</p>
+
+        <form method="post" asp-action="EditDetails">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="RefNumber" type="hidden">
+            <input asp-for="InstallerStatusDescription" type="hidden">
+
+            <div id="businessDetails" class="form-group">
+                <div class="col-12">
+                    <label asp-for="InstallerName">Installer name</label>
+                    <span asp-validation-for="InstallerName" class="text-danger"></span>
+                    <input id="installerName" asp-for="InstallerName" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="CompanyNumber">Company number</label>
+                    <span asp-validation-for="CompanyNumber" class="text-danger"></span>
+                    <input id="companyNumber" asp-for="CompanyNumber" class="form-control" />
+                </div>
+            </div>
+            <br />
+            <div id="address" class="form-group">
+                <div class="col-12">
+                    <label asp-for="AddressLine1">Address Line 1</label>
+                    <span asp-validation-for="AddressLine1" class="text-danger"></span>
+                    <input id="addressLine1" asp-for="AddressLine1" class="form-control" placeholder="e.g 1234 Main St" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="AddressLine2">Address Line 2</label>
+                    <span asp-validation-for="AddressLine2" class="text-danger"></span>
+                    <input id="addressLine2" asp-for="AddressLine2" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AddressLine3">City/County</label>
+                    <span asp-validation-for="AddressLine3" class="text-danger"></span>
+                    <input id="addressLine3" asp-for="AddressLine3" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="UPRN">UPRN</label>
+                    <span asp-validation-for="UPRN" class="text-danger"></span>
+                    <input id="uprn" asp-for="UPRN" class="form-control" placeholder="(optional)">
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Postcode">Postcode</label>
+                    <span asp-validation-for="Postcode" class="text-danger"></span>
+                    <input id="postcode" asp-for="Postcode" class="form-control" placeholder="e.g. E14 5NY">
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Edit Details" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a href="/">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

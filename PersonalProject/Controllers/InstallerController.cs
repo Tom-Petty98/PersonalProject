@@ -24,12 +24,6 @@ public class InstallerController : Controller
         _updateInstallerService = updateInstallerService;
     }
 
-    public async Task<IActionResult> Index(string refNumber)
-    {
-        var model = await _getInstallerService.GetInstallerByReferenceNumberAsync(refNumber);
-        return View("Installers/Details", model);
-    }
-
     [HttpGet]    
     public IActionResult Create()
     {
@@ -73,7 +67,7 @@ public class InstallerController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditDetails(string refNumber)
+    public async Task<IActionResult> EditStatus(string refNumber)
     {
         var installer = await _getInstallerService.GetInstallerByReferenceNumberAsync(refNumber);
         var installerStatuses = await _getInstallerService.GetAllInstallerStatusesAsync();
@@ -81,54 +75,65 @@ public class InstallerController : Controller
         {
             return NotFound();
         }
-        var model = new EditInstallerViewModel()
+        var model = new EditInstallerStatusViewModel()
         {
             InstallerStatuses = installerStatuses,
-            Status = new EditInstallerStatusViewModel()
-            {
-                RefNumber = installer.RefNumber,
-                StatusId = installer.StatusId,
-                ReviewRecommendation = installer.ReviewRecommendation,
-                FlaggedForAudit = installer.FlaggedForAudit,
-                LastEditedBy = installer.LastUpdatedBy ?? installer.CreatedBy,
-                LastEditedDate = installer.LastUpdatedDate ?? installer.CreatedDate
-            },
-            Detail = new EditInstallerDetailsViewModel()
-            {
-                RefNumber = installer.RefNumber,
-                InstallerName = installer.InstallerDetail.InstallerName,
-                CompanyNumber = installer.InstallerDetail.CompanyNumber,
-                Postcode = installer.InstallerDetail.InstallerAddress!.Postcode,
-                UPRN = installer.InstallerDetail.InstallerAddress!.UPRN,
-                AddressLine1 = installer.InstallerDetail.InstallerAddress.AddressLine1,
-                AddressLine2 = installer.InstallerDetail.InstallerAddress.AddressLine2,
-                AddressLine3 = installer.InstallerDetail.InstallerAddress.AddressLine3,
-                LastEditedBy = installer.InstallerDetail.LastUpdatedBy ?? installer.InstallerDetail.CreatedBy,
-                LastEditedDate = installer.InstallerDetail.LastUpdatedDate ?? installer.InstallerDetail.CreatedDate
-            }                   
+            RefNumber = installer.RefNumber,
+            StatusId = installer.StatusId,
+            ReviewRecommendation = installer.ReviewRecommendation,
+            FlaggedForAudit = installer.FlaggedForAudit,
+            LastEditedBy = installer.LastUpdatedBy ?? installer.CreatedBy,
+            LastEditedDate = installer.LastUpdatedDate ?? installer.CreatedDate,
+            InstallerDetail = installer.InstallerDetail
         };
-        return View("Edit", model);
+        return View("EditStatus", model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditStatus(EditInstallerStatusViewModel statusModel)
+    public async Task<IActionResult> EditStatus(EditInstallerStatusViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var installer = await _getInstallerService.GetInstallerByReferenceNumberAsync(statusModel.RefNumber);
+            var installer = await _getInstallerService.GetInstallerByReferenceNumberAsync(model.RefNumber);
             if (installer == null)
             {
                 return NotFound();
             }
-            installer.StatusId = statusModel.StatusId;
-            installer.ReviewRecommendation = statusModel.ReviewRecommendation;
-            installer.FlaggedForAudit = statusModel.FlaggedForAudit;
+            installer.Status = null;
+            installer.StatusId = model.StatusId;
+            installer.ReviewRecommendation = model.ReviewRecommendation;
+            installer.FlaggedForAudit = model.FlaggedForAudit;
             installer.LastUpdatedBy = "Unknown";
             installer.LastUpdatedDate = DateTime.UtcNow;
             await _updateInstallerService.UpdateInstaller(installer);
-            return RedirectToAction(nameof(Index));
         }
-        return View();
+        return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber});
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditDetails(string refNumber)
+    {
+        var installer = await _getInstallerService.GetInstallerByReferenceNumberAsync(refNumber);
+        if (installer == null)
+        {
+            return NotFound();
+        }
+        var installerDetail = installer.InstallerDetail;
+        var model = new EditInstallerDetailsViewModel()
+        {
+            InstallerStatusDescription = installer.Status!.Description,
+            RefNumber = installer.RefNumber,
+            InstallerName = installerDetail.InstallerName,
+            CompanyNumber = installerDetail.CompanyNumber,
+            Postcode = installerDetail.InstallerAddress!.Postcode,
+            UPRN = installerDetail.InstallerAddress!.UPRN,
+            AddressLine1 = installerDetail.InstallerAddress.AddressLine1,
+            AddressLine2 = installerDetail.InstallerAddress.AddressLine2,
+            AddressLine3 = installerDetail.InstallerAddress.AddressLine3,
+            LastEditedBy = installerDetail.LastUpdatedBy ?? installerDetail.CreatedBy,
+            LastEditedDate = installerDetail.LastUpdatedDate ?? installerDetail.CreatedDate            
+        };
+        return View("EditDetails", model);
     }
 
     [HttpPost]
@@ -153,7 +158,7 @@ public class InstallerController : Controller
             installerDetail.LastUpdatedBy = "Unknown";
             installerDetail.LastUpdatedDate = DateTime.UtcNow;
             await _updateInstallerService.UpdateInstallerDetail(installerDetail);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber });
         }
         return View();
     }

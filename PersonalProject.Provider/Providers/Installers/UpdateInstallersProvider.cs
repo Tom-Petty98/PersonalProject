@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalProject.Domain.Entities;
+using PersonalProject.Domain.Request;
+using System.Diagnostics;
 
 
 namespace PersonalProject.Provider.Providers.Installers;
@@ -50,30 +52,34 @@ public class UpdateInstallersProvider : IUpdateInstallersProvider
 
     public async Task<bool> UpdateInstaller(Installer installer)
     {
-        try
-        {
-            _context.Attach(installer).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        return true;
+        var foundInstaller = await _context.Installers.FindAsync(installer.Id);
+
+        if (foundInstaller == null) throw new BadRequestException("Installer not found", System.Net.HttpStatusCode.NotFound);
+
+        int result = 0;
+        var executionStratergy = _context.Database.CreateExecutionStrategy();
+        await executionStratergy.ExecuteAsync(
+            async () =>
+            {
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+
+                if (foundInstaller.StatusId != installer.StatusId)
+                {
+                    UpsertStatusHistory(installer);
+                }
+                _context.Entry(foundInstaller).CurrentValues.SetValues(installer);
+
+                var result = await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            });
+        return result > 0;
     }
 
     public async Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
     {
-        try
-        {
-            _context.Attach(installerDetail).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        return true;
+        _context.InstallerDetails.Update(installerDetail);
+        int result = await _context.SaveChangesAsync();
+        return result > 0;
     }
 
     private void UpsertStatusHistory(Installer installer)
