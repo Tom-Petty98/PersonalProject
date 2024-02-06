@@ -86,12 +86,12 @@ public class InstallersController : ControllerBase
     [Route("GetInstallerByReferenceNumber/{refNumber}")]
     public async Task<IActionResult> GetInstallerByReferenceNumber(string refNumber)
     {
-        var Installer = await _getInstallersService.GetInstallerByReferenceNumberAsync(refNumber);
+        var installer = await _getInstallersService.GetInstallerByReferenceNumberAsync(refNumber);
 
-        if (Installer == null) 
+        if (installer == null) 
             return NotFound($"No Installer found for ref number {refNumber}");
 
-        return Ok(Installer);
+        return Ok(installer);
     }
 
     [HttpGet]

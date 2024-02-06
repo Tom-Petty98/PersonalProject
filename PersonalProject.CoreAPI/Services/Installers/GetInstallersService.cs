@@ -19,9 +19,9 @@ public class GetInstallersService : IGetInstallersService
 {
     private readonly IGetInstallersProvider _getInstallersProvider;
 
-    public GetInstallersService(IGetInstallersProvider InstallersProvider)
+    public GetInstallersService(IGetInstallersProvider installersProvider)
     {
-        _getInstallersProvider = InstallersProvider;
+        _getInstallersProvider = installersProvider;
     }
 
     public async Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView()

@@ -25,6 +25,8 @@ public static class ServiceExtensions
         services.AddTransient<IUpdateApplicationsProvider, UpdateApplicationsProvider>();
         services.AddTransient<IGetInstallersProvider, GetInstallersProvider>();
         services.AddTransient<IUpdateInstallersProvider, UpdateInstallersProvider>();
+        services.AddTransient<IGetUsersProvider, GetUsersProvider>();
+        services.AddTransient<IUpdateUsersProvider, UpdateUsersProvider>();
         services.AddTransient<IAuditLogsProvider, AuditLogsProvider>();
 
         return services;

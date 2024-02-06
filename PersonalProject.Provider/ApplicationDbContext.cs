@@ -27,7 +27,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserInvite> UserInvites { get; set; }
     public DbSet<UserInviteStatus> UserInviteStatuses { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,6 +40,10 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<ApplicationDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Application"); });
         modelBuilder.Entity<InstallerDashboard>().ToView("vw_Dashboard_Installer").HasNoKey();
-        //modelBuilder.Entity<InstallerDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Installer"); });
+
+        modelBuilder.Entity<User>()
+            .HasMany(x => x.Roles)
+            .WithMany(y => y.Users)
+            .UsingEntity(z => z.ToTable("UserRole"));
     }
 }

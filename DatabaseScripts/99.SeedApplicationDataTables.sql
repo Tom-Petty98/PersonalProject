@@ -39,13 +39,18 @@ EXECUTE [dbo].[uspAddUserInviteStatus] 6, 'NOTDELIVRD', 'Not Delivered';
 
 SET IDENTITY_INSERT [dbo].[UserInviteStatuses] OFF;
 
-SET IDENTITY_INSERT [dbo].[UserRoles] ON;
+SET IDENTITY_INSERT [dbo].[Roles] ON;
 
-EXECUTE [dbo].[uspAddUserRole] 1, 'AuthorisedRep';
-EXECUTE [dbo].[uspAddUserRole] 2, 'StandardUser';
-EXECUTE [dbo].[uspAddUserRole] 3, 'PendingAuthRep';
+EXECUTE [dbo].[uspAddRole] 1, 'AuthorisedRep', 0;
+EXECUTE [dbo].[uspAddRole] 2, 'StandardUser', 0;
+EXECUTE [dbo].[uspAddRole] 3, 'PendingAuthRep', 0;
+EXECUTE [dbo].[uspAddRole] 4, 'Admin', 1;
+EXECUTE [dbo].[uspAddRole] 5, 'L1InstallerReviewer', 1;
+EXECUTE [dbo].[uspAddRole] 6, 'L2InstallerManager', 1;
+EXECUTE [dbo].[uspAddRole] 7, 'L1ApplicationReviewer', 1;
+EXECUTE [dbo].[uspAddRole] 8, 'L2ApplicationManager', 1;
 
-SET IDENTITY_INSERT [dbo].[UserRoles] OFF;
+SET IDENTITY_INSERT [dbo].[Roles] OFF;
 
 SET IDENTITY_INSERT [dbo].[DocumentTypes] ON;
 

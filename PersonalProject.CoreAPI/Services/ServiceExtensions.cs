@@ -11,7 +11,8 @@ public static class ServiceExtensions
         services.AddTransient<IUpdateApplicationService, UpdateApplicationService>();
         services.AddTransient<IGetInstallersService, GetInstallersService>();
         services.AddTransient<IUpdateInstallerService, UpdateInstallerService>();
-
+        services.AddTransient<IGetUsersService, GetUsersService>();
+        services.AddTransient <IUpdateUsersService, UpdateUsersService>();
         return services;
     }
 }

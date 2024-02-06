@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalProject.Domain.Entities;
 
 namespace PersonalProject.Provider.Configurations;
-public class UserRoleEntityConfiguration : IEntityTypeConfiguration<UserRole>
+public class UserRoleEntityConfiguration : IEntityTypeConfiguration<Role>
 {
-    public void Configure(EntityTypeBuilder<UserRole> builder)
+    public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.Property(b => b.Description)
             .HasMaxLength(255)

@@ -13,9 +13,9 @@ public class UpdateInstallerService : IUpdateInstallerService
 {
     private readonly IUpdateInstallersProvider _updateInstallersProvider;
 
-    public UpdateInstallerService(IUpdateInstallersProvider InstallersProvider)
+    public UpdateInstallerService(IUpdateInstallersProvider installersProvider)
     {
-        _updateInstallersProvider = InstallersProvider;
+        _updateInstallersProvider = installersProvider;
     }
 
     public async Task<Installer> AddInstaller(Installer installer)

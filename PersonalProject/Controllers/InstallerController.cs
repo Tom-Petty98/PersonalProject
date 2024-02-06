@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalProject.Domain.Constants;
 using PersonalProject.Domain.Entities;
-using PersonalProject.Domain.Enums;
 using PersonalProject.InternalPortal.Models.Installers;
 using PersonalProject.InternalPortal.Services.Installers;
-using System.Security.Cryptography;
 using static PersonalProject.Domain.Enums.InstallerStatus;
 
 namespace PersonalProject.InternalPortal.Controllers;
