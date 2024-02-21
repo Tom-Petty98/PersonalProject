@@ -1,7 +1,5 @@
 ﻿using PersonalProject.Domain.Entities;
-using PersonalProject.Domain.Request;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace PersonalProject.Provider.Providers.Installers;
 
@@ -10,7 +8,7 @@ public interface IGetUsersProvider
     Task<List<User>?> GetUsersByInstallerId(int installerId);
     Task<User?> GetUserById(int userId);
     Task<bool> IsEmailInUse(string email);
-    Task<IEnumerable<Role>> GetUserRolesAsync(bool getExternal);
+    Task<IEnumerable<Role>> GetUserRolesAsync(bool getInternal);
 }
 
 public class GetUsersProvider : IGetUsersProvider

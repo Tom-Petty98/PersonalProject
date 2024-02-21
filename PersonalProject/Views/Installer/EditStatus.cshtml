@@ -6,7 +6,12 @@
 
 <h1>@Model.InstallerDetail!.InstallerName</h1>
 <h3>@Model.RefNumber</h3>
-
+<br />
+<div>
+    <a href="/">Installer Dashboard</a>
+    <a class="btn btn-primary" href="../Users/Details?installerId=@Model.InstallerId" role="button">Manage Users</a>
+    @* <a class="btn btn-primary" href="#" role="button">Link</a> *@
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">

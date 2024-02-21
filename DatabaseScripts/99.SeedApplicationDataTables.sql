@@ -42,13 +42,14 @@ SET IDENTITY_INSERT [dbo].[UserInviteStatuses] OFF;
 SET IDENTITY_INSERT [dbo].[Roles] ON;
 
 EXECUTE [dbo].[uspAddRole] 1, 'AuthorisedRep', 0;
-EXECUTE [dbo].[uspAddRole] 2, 'StandardUser', 0;
-EXECUTE [dbo].[uspAddRole] 3, 'PendingAuthRep', 0;
-EXECUTE [dbo].[uspAddRole] 4, 'Admin', 1;
-EXECUTE [dbo].[uspAddRole] 5, 'L1InstallerReviewer', 1;
-EXECUTE [dbo].[uspAddRole] 6, 'L2InstallerManager', 1;
-EXECUTE [dbo].[uspAddRole] 7, 'L1ApplicationReviewer', 1;
-EXECUTE [dbo].[uspAddRole] 8, 'L2ApplicationManager', 1;
+EXECUTE [dbo].[uspAddRole] 2, 'SuperUser', 0;
+EXECUTE [dbo].[uspAddRole] 3, 'StandardUser', 0;
+EXECUTE [dbo].[uspAddRole] 4, 'PendingAuthRep', 0;
+EXECUTE [dbo].[uspAddRole] 5, 'Admin', 1;
+EXECUTE [dbo].[uspAddRole] 6, 'L1InstallerReviewer', 1;
+EXECUTE [dbo].[uspAddRole] 7, 'L2InstallerManager', 1;
+EXECUTE [dbo].[uspAddRole] 8, 'L1ApplicationReviewer', 1;
+EXECUTE [dbo].[uspAddRole] 9, 'L2ApplicationManager', 1;
 
 SET IDENTITY_INSERT [dbo].[Roles] OFF;
 

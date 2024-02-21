@@ -7,10 +7,9 @@ namespace PersonalProject.CoreAPI.Services.Installers;
 public interface IGetInstallersService
 {
     Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber);
+    Task<Installer?> GetInstallerByIdAsync(int installerId);
     Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
-
     Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter);
-
     Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync();
 }
 
@@ -34,6 +33,9 @@ public class GetInstallersService : IGetInstallersService
 
     public async Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber)
      => await _getInstallersProvider.GetInstallerByReferenceNumberAsync(refNumber);
+
+    public async Task<Installer?> GetInstallerByIdAsync(int installerId)
+     => await _getInstallersProvider.GetInstallerById(installerId);
 
     public Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter)
     {

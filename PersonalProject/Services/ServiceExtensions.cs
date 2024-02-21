@@ -23,6 +23,8 @@ public static class ServiceExtensions
         services.AddTransient<IUpdateApplicationsService, UpdateApplicationsService>();
         services.AddTransient<IGetInstallerService, GetInstallerService>();
         services.AddTransient<IUpdateInstallerService, UpdateInstallerService>();
+        services.AddTransient<IGetUsersService, GetUsersService>();
+        services.AddTransient<IUpdateUsersService, UpdateUsersService>();
 
         return services;
     }

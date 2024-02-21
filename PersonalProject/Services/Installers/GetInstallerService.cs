@@ -2,12 +2,14 @@
 using PersonalProject.Domain.Request;
 using PersonalProject.InternalPortal.Services.Helpers;
 using Polly.Registry;
+using System.Security.Cryptography;
 
 namespace PersonalProject.InternalPortal.Services.Installers;
 
 public interface IGetInstallerService
 {
     Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber);
+    Task<Installer?> GetInstallerByIdAsync(int installerId);
     Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
     Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync();
     Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter);
@@ -54,6 +56,15 @@ public class GetInstallerService : BaseRequestsClient<GetInstallerService>, IGet
         return await GetAsync<Installer?>(httpClient, target, null, null);
     }
 
+    public async Task<Installer?> GetInstallerByIdAsync(int installerId)
+    {
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetInstallerByIdAsync));
+        var target = $"Installers/GetInstallerById/{installerId}";
+
+        return await GetAsync<Installer?>(httpClient, target, null, null);
+    }
+
     public async Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter)
     {
         var httpClient = BuildClient();
@@ -62,5 +73,5 @@ public class GetInstallerService : BaseRequestsClient<GetInstallerService>, IGet
 
         var responseObject = await GetAsync<PagedResult<InstallerDashboard>>(httpClient, target, null, null);
         return responseObject ?? new PagedResult<InstallerDashboard>();
-    }
+    }   
 }

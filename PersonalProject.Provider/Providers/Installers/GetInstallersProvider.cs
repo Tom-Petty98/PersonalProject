@@ -7,10 +7,9 @@ namespace PersonalProject.Provider.Providers.Installers;
 public interface IGetInstallersProvider
 {
     Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber);
+    Task<Installer?> GetInstallerById(int installerId);
     Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
-
     Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync();
-
     Task<PagedResult<InstallerDashboard>> GetPagedInstallers(int page = 1, int pageSize = 20,
         string sortBy = "RefNumber", bool orderByDescending = true,
         List<string>? filterInstallerStatusBy = null,
@@ -43,6 +42,15 @@ public class GetInstallersProvider : IGetInstallersProvider
             .Include(x => x.InstallerDetail)
             .Include(x => x.InstallerDetail.InstallerAddress)
             .FirstOrDefaultAsync(x => x.RefNumber == refNumber);
+    }
+
+    public async Task<Installer?> GetInstallerById(int installerId)
+    {
+        return await _context.Installers
+            .Include(x => x.Status)
+            .Include(x => x.InstallerDetail)
+            .Include(x => x.InstallerDetail.InstallerAddress)
+            .FirstOrDefaultAsync(x => x.Id == installerId);
     }
 
     public Task<InstallerDetail?> GetInstallerDetailByReferenceNumberAsync(string refNumber)

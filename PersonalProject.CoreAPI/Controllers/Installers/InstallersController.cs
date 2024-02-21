@@ -95,6 +95,18 @@ public class InstallersController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetInstallerById/{installerId}")]
+    public async Task<IActionResult> GetInstallerById(int installerId)
+    {
+        var installer = await _getInstallersService.GetInstallerByIdAsync(installerId);
+
+        if (installer == null)
+            return NotFound($"No Installer found for id {installerId}");
+
+        return Ok(installer);
+    }
+
+    [HttpGet]
     [Route("GetAllInstallersDashboardView")]
     public async Task<IActionResult> GetAllInstallersDashboardView()
     {

@@ -1,0 +1,52 @@
+﻿@using PersonalProject.InternalPortal.Models.Users
+@model CreateUserViewModel
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h1>Create User</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="InstallerId" type="hidden">
+
+            <div class="form-group">
+
+                <label asp-for="RoleId" class="control-label">Are they a super user?</label>
+                <br />
+                <div class="form-check form-check-inline">
+                    <label asp-for="RoleId" class="form-check-label">Yes</label>
+                    <input asp-for="RoleId" class="form-check-input" value="2" type="radio" />
+                </div>
+                <div class="form-check form-check-inline">
+                    <label asp-for="RoleId" class="form-check-label">No</label>
+                    <input asp-for="RoleId" class="form-check-input" value="3" type="radio" checked />
+                </div>
+            </div>
+            <br/>
+
+            <div class="col-12">
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <input id="email-input" asp-for="Email" class="form-control" />
+            </div>
+
+            <br />
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a href="/">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

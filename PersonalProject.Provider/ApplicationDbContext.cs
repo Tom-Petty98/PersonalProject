@@ -38,6 +38,9 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<InstallerStatus>().HasIndex(b => b.Code).HasDatabaseName("IS_Index_Code");
         modelBuilder.Entity<UserInviteStatus>().HasIndex(b => b.Code).HasDatabaseName("UIS_Index_Code");
 
+        modelBuilder.Entity<Application>().HasIndex(p => p.RefNumber).IsUnique(true);
+        modelBuilder.Entity<Installer>().HasIndex(p => p.RefNumber).IsUnique(true);
+
         modelBuilder.Entity<ApplicationDashboard>(e => { e.HasNoKey(); e.ToView("vw_Dashboard_Application"); });
         modelBuilder.Entity<InstallerDashboard>().ToView("vw_Dashboard_Installer").HasNoKey();
 
@@ -45,5 +48,17 @@ public class ApplicationDbContext : DbContext
             .HasMany(x => x.Roles)
             .WithMany(y => y.Users)
             .UsingEntity(z => z.ToTable("UserRole"));
+
+        //modelBuilder.Entity<UserRole>().HasKey(k => new { k.UserId, k.RoleId });
+
+        //modelBuilder.Entity<UserRole>()
+        //.HasOne(x => x.User)
+        //.WithMany(x => x.UserRoles)
+        //.HasForeignKey(x => x.UserId);
+
+        //modelBuilder.Entity<UserRole>()
+        //.HasOne(x => x.Role)
+        //.WithMany(x => x.UserRoles)
+        //.HasForeignKey(x => x.RoleId);
     }
 }

@@ -77,6 +77,7 @@ public class InstallerController : Controller
         {
             InstallerStatuses = installerStatuses,
             RefNumber = installer.RefNumber,
+            InstallerId = installer.Id,
             StatusId = installer.StatusId,
             ReviewRecommendation = installer.ReviewRecommendation,
             FlaggedForAudit = installer.FlaggedForAudit,
