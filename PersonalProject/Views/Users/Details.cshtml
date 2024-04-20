@@ -14,80 +14,83 @@
 </div>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        @if (Model.Users.Any())
-        {
-            <table class="table">
-                <thead>
+
+@if (Model.Users.Any())
+{
+    <div class="table-responsive">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.Users)
+                {
                     <tr>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th></th>
+                        <td>
+                            <a href="../Users/Edit?userId=@item.Id">@item.Email</a>
+                        </td>
+                        <td>
+                            <div>
+                                @foreach (var role in item.Roles)
+                                {
+                                    <span class="badge bg-secondary">@role.Description</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @if (item.IsObselete)
+                            {
+                                <p class="text-bg-secondary">Deleted</p>
+                            }
+                            else
+                            {
+                                <p class="text-bg-success">Active</p>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsObselete)
+                            {
+                                <a href="../Users/Reactivate?userId=@item.Id">Reactivate user</a>
+                            }
+                            else
+                            {
+                                if (item.Roles.First().Id == 1)
+                                {
+                                    <a href="../Users/ReplaceUser?userId=@item.Id">Replace Auth Rep</a>
+                                }
+                                else
+                                {
+                                    <a href="../Users/Delete?userId=@item.Id">Deactivate user</a>
+                                }
+                                <br />
+                                @* if (InviteStatus != 1) *@
+                                <a href="#">Invite user</a>
+                            }
+                        </td>
                     </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach (var item in Model.Users)
-                    {
-                        <tr>
-                            <td>
-                                <a href="../Users/Edit?userId=@item.Id">@item.Email</a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Roles.First())
-                            </td>
-                            <td>
-                                @if (item.IsObselete)
-                                {
-                                    <p class="text-bg-secondary">Deleted</p>
-                                }
-                                else
-                                {
-                                    <p class="text-bg-success">Active</p>
-                                }
-                            </td>
-                            <td>
-                                @if (item.IsObselete)
-                                {
-                                    <a href="../Users/Reactivate?userId=@item.Id">Reactivate user</a>
-                                }
-                                else
-                                {
-                                    if (item.Roles.First().Id == 1)
-                                    {
-                                        <a href="../Users/ReplaceUser?userId=@item.Id">Replace Auth Rep</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="../Users/Delete?userId=@item.Id">Deactivate user</a>
-                                    }
-
-                                    @* if (InviteStatus != 1) *@
-                                    <a href="#">Invite user</a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>              
-            </table>
-
-            <br />
-            <hr />
-            <br />
-            <h3>Add aditional users</h3>
-            <br />
-            <a class="btn btn-primary" href="../Users/Create" role="button">Add Aditional Users</a>
-        }
-        else
-        {
-            <a class="btn btn-primary" href="../Users/CreateAuthRep" role="button">Add Auth Rep</a>
-        }       
-        
+                }
+            </tbody>              
+        </table>
     </div>
-</div>
+    <br />
+    <hr />
+    <br />
+    <h3>Add aditional users</h3>
+    <br />
+    <a class="btn btn-primary" href="../Users/Create?installerId=@Model.InstallerId" role="button">Add Aditional Users</a>
+}
+else
+{
+    <a class="btn btn-primary" href="../Users/CreateAuthRep?installerId=@Model.InstallerId" role="button">Add Auth Rep</a>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

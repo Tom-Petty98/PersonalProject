@@ -47,18 +47,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasMany(x => x.Roles)
             .WithMany(y => y.Users)
-            .UsingEntity(z => z.ToTable("UserRole"));
-
-        //modelBuilder.Entity<UserRole>().HasKey(k => new { k.UserId, k.RoleId });
-
-        //modelBuilder.Entity<UserRole>()
-        //.HasOne(x => x.User)
-        //.WithMany(x => x.UserRoles)
-        //.HasForeignKey(x => x.UserId);
-
-        //modelBuilder.Entity<UserRole>()
-        //.HasOne(x => x.Role)
-        //.WithMany(x => x.UserRoles)
-        //.HasForeignKey(x => x.RoleId);
+            .UsingEntity(z => z.ToTable("UserRoles"));
     }
 }

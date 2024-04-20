@@ -6,7 +6,6 @@ public class User
     public int InstallerId { get; set; }
     public string Email { get; set; } = string.Empty;
     public Guid? AzureId { get; set; }
-    public int UserRoleId { get; set; }
     public bool IsObselete { get; set; }
     public bool IsInternalUser { get; set; }
     public string CreatedBy { get; set; } = string.Empty;

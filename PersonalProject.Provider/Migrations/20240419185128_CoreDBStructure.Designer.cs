@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PersonalProject.Provider;
 
 #nullable disable
 
 namespace PersonalProject.Provider.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125190120_CoreDBStructure")]
+    [Migration("20240419185128_CoreDBStructure")]
     partial class CoreDBStructure
     {
         /// <inheritdoc />
@@ -19,7 +20,7 @@ namespace PersonalProject.Provider.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -77,8 +78,14 @@ namespace PersonalProject.Provider.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CurrentContactId")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("FlaggedForAudit")
                         .HasColumnType("bit");
+
+                    b.Property<int>("InstallerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(255)
@@ -102,6 +109,11 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("ApplicationDetailId");
 
+                    b.HasIndex("CurrentContactId");
+
+                    b.HasIndex("RefNumber")
+                        .IsUnique();
+
                     b.HasIndex("StatusId");
 
                     b.ToTable("Applications");
@@ -109,9 +121,6 @@ namespace PersonalProject.Provider.Migrations
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.ApplicationDashboard", b =>
                 {
-                    b.Property<string>("AppRefNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("FlaggedForAudit")
                         .HasColumnType("bit");
 
@@ -119,6 +128,9 @@ namespace PersonalProject.Provider.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Postcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("ReviewRecommendation")
@@ -254,7 +266,10 @@ namespace PersonalProject.Provider.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("EntityId")
+                    b.Property<int?>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntityType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EventTimeStamp")
@@ -264,10 +279,16 @@ namespace PersonalProject.Provider.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ResultStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdateMethodMessage")
                         .IsRequired()
                         .HasMaxLength(127)
                         .HasColumnType("nvarchar(127)");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -292,9 +313,6 @@ namespace PersonalProject.Provider.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("DocumeentTypeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
@@ -416,6 +434,9 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("InstallerDetailId");
 
+                    b.HasIndex("RefNumber")
+                        .IsUnique();
+
                     b.HasIndex("StatusId");
 
                     b.ToTable("Installers");
@@ -423,8 +444,8 @@ namespace PersonalProject.Provider.Migrations
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.InstallerDashboard", b =>
                 {
-                    b.Property<bool?>("FlaggedForAudit")
-                        .HasColumnType("bit");
+                    b.Property<string>("FlaggedForAudit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstallerName")
                         .HasColumnType("nvarchar(max)");
@@ -435,8 +456,8 @@ namespace PersonalProject.Provider.Migrations
                     b.Property<string>("RefNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("ReviewRecommendation")
-                        .HasColumnType("bit");
+                    b.Property<string>("ReviewRecommendation")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusCode")
                         .HasColumnType("nvarchar(max)");
@@ -515,7 +536,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
-                        .HasDatabaseName("AS_Index_Code");
+                        .HasDatabaseName("IS_Index_Code");
 
                     b.ToTable("InstallerStatuses");
                 });
@@ -527,9 +548,6 @@ namespace PersonalProject.Provider.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicationStatusId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -550,7 +568,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationStatusId");
+                    b.HasIndex("InstallerStatusId");
 
                     b.ToTable("InstallerStatusHistories");
                 });
@@ -596,6 +614,27 @@ namespace PersonalProject.Provider.Migrations
                     b.ToTable("Notes");
                 });
 
+            modelBuilder.Entity("PersonalProject.Domain.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsInternalRole")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("PersonalProject.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -623,6 +662,9 @@ namespace PersonalProject.Provider.Migrations
                     b.Property<int>("InstallerId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsInternalUser")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsObselete")
                         .HasColumnType("bit");
 
@@ -633,12 +675,7 @@ namespace PersonalProject.Provider.Migrations
                     b.Property<DateTime?>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -706,27 +743,24 @@ namespace PersonalProject.Provider.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
-                        .HasDatabaseName("AS_Index_Code");
+                        .HasDatabaseName("UIS_Index_Code");
 
                     b.ToTable("UserInviteStatuses");
                 });
 
-            modelBuilder.Entity("PersonalProject.Domain.Entities.UserRole", b =>
+            modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("RolesId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.HasKey("RolesId", "UsersId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("UsersId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.Application", b =>
@@ -737,6 +771,12 @@ namespace PersonalProject.Provider.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PersonalProject.Domain.Entities.User", "CurrentContact")
+                        .WithMany()
+                        .HasForeignKey("CurrentContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PersonalProject.Domain.Entities.ApplicationStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
@@ -744,6 +784,8 @@ namespace PersonalProject.Provider.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationDetail");
+
+                    b.Navigation("CurrentContact");
 
                     b.Navigation("Status");
                 });
@@ -811,24 +853,13 @@ namespace PersonalProject.Provider.Migrations
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.InstallerStatusHistory", b =>
                 {
-                    b.HasOne("PersonalProject.Domain.Entities.ApplicationStatus", "ApplicationStatus")
+                    b.HasOne("PersonalProject.Domain.Entities.InstallerStatus", "InstallerStatus")
                         .WithMany()
-                        .HasForeignKey("ApplicationStatusId")
+                        .HasForeignKey("InstallerStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationStatus");
-                });
-
-            modelBuilder.Entity("PersonalProject.Domain.Entities.User", b =>
-                {
-                    b.HasOne("PersonalProject.Domain.Entities.UserRole", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
+                    b.Navigation("InstallerStatus");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.UserInvite", b =>
@@ -848,6 +879,21 @@ namespace PersonalProject.Provider.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserInviteStatus");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("PersonalProject.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonalProject.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

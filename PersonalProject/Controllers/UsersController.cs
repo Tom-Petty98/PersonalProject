@@ -31,44 +31,49 @@ public class UsersController : Controller
         var users = await _getUsersService.GetUsersByInstallerIdAsync(installerId);
         var model = new UserDetailsViewModel()
         {
+            InstallerId = installerId,
             InstallerName = installer.InstallerDetail.InstallerName,
             RefNumber = installer.RefNumber,
-            Users = users
+            Users = users!
         };
 
         return View("Details", model);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public IActionResult Create(int installerId)
     {
         var model = new CreateUserViewModel();
+        model.InstallerId = installerId;
         return View(model);
     }
 
     [HttpGet]
-    public IActionResult CreateAuthRep()
+    public IActionResult CreateAuthRep(int installerId)
     {
         var model = new CreateUserViewModel();
+        model.InstallerId = installerId;
         return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserViewModel model)
+    public async Task<IActionResult> CreateExternalUser(CreateUserViewModel model)
     {
         if (ModelState.IsValid)
         {
+            var userRoles = await _getUsersService.GetUserRolesAsync(false);
+            var userRole = userRoles.First(x => x.Id == model.RoleId);
             var user = new User
             {
                 Email = model.Email,
                 InstallerId = model.InstallerId,
-                Roles = new List<Role> { new () { Id = model.RoleId } },
+                Roles = new List<Role> { userRole },
                 CreatedBy = "Unknown",
                 CreatedDate = DateTime.UtcNow
             };
 
             await _updateUsersService.AddUser(user);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details");
         }
         return View();
     }

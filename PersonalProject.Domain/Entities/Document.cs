@@ -8,7 +8,7 @@ public class Document
     /// The primary key of the Entity this document is attached to
     /// </summary>
     public int? EntityId { get; set; }
-    public int DocumeentTypeId { get; set; }
+    public int DocumentTypeId { get; set; }
     public long FileSizeBytes { get; set; }
     public bool IsDeleted { get; set; } = false;
 
