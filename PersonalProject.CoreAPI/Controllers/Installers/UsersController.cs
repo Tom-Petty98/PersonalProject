@@ -63,15 +63,15 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Route("GetUsersByInstallerId/{id}")]
-    public async Task<IActionResult> GetUserByInstallerId(int installerIdd)
+    [Route("GetUsersByInstallerId/{installerId}")]
+    public async Task<IActionResult> GetUserByInstallerId(int installerId)
     {
-        var users = await _getUsersService.GetUsersByInstallerIdAsync(installerIdd);
+        var users = await _getUsersService.GetUsersByInstallerIdAsync(installerId);
         return Ok(users);
     }
 
     [HttpGet]
-    [Route("GetUserById/{id}")]
+    [Route("GetUserById/{userId}")]
     public async Task<IActionResult> GetUserById(int userId)
     {
         var user = await _getUsersService.GetUserByIdAsync(userId);

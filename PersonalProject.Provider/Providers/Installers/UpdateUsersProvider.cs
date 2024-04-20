@@ -5,7 +5,7 @@ namespace PersonalProject.Provider.Providers.Installers;
 
 public interface IUpdateUsersProvider
 {
-    Task<User> AddUser(User user);
+    Task<int> AddUser(User user);
     Task<bool> UpdateUser(User user);
 }
 
@@ -20,11 +20,19 @@ public class UpdateUsersProvider : IUpdateUsersProvider
         _getUsersProvider = getUsersProvider;
     }
 
-    public async Task<User> AddUser(User user)
+    public async Task<int> AddUser(User user)
     {
-        var newUser = _context.Users.Add(user).Entity;
+        var roles = _context.Roles.ToList();
+        List<Role> selectedRoles = new List<Role>();
+        foreach (var role in user.Roles)
+        {
+            selectedRoles.Add(roles.First(x => x.Id == role.Id));
+        }
+
+        user.Roles = selectedRoles;
+        var newUserId = _context.Users.Add(user).Entity.Id;
         await _context.SaveChangesAsync();
-        return newUser;
+        return newUserId;
     }
 
     public async Task<bool> UpdateUser(User user)

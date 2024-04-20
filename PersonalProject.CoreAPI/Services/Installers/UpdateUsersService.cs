@@ -5,7 +5,7 @@ namespace PersonalProject.CoreAPI.Services.Installers;
 
 public interface IUpdateUsersService
 {
-    Task<User> AddUserAsync(User user);
+    Task<int> AddUserAsync(User user);
     Task<bool> UpdateUserAsync(User user);
 }
 public class UpdateUsersService : IUpdateUsersService
@@ -19,7 +19,7 @@ public class UpdateUsersService : IUpdateUsersService
         _getUsersProvider = getUsersProvider;
     }
 
-    public async Task<User> AddUserAsync(User user)
+    public async Task<int> AddUserAsync(User user)
     {
         bool isDuplicate = await _getUsersProvider.IsEmailInUse(user.Email);
 

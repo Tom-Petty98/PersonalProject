@@ -39,16 +39,16 @@
                 <label asp-for="ReviewRecommendation" class="control-label">Review Recommedation</label>
                 <br />
                 <div class="form-check form-check-inline">
-                    <label asp-for="ReviewRecommendation" class="form-check-label">Pass</label>
-                    <input asp-for="ReviewRecommendation" class="form-check-input" value="true" type="radio" />
+                    <label for="ReviewRecommendation-pass" class="form-check-label">Pass</label>
+                    <input asp-for="ReviewRecommendation" id="ReviewRecommendation-pass" class="form-check-input" value="true" type="radio" />
                 </div>
                 <div class="form-check form-check-inline">
-                    <label asp-for="ReviewRecommendation" class="form-check-label">Fail</label>
-                    <input asp-for="ReviewRecommendation" class="form-check-input" value="false" type="radio" />
+                    <label for="ReviewRecommendation-fail" class="form-check-label">Fail</label>
+                    <input asp-for="ReviewRecommendation" id="ReviewRecommendation-fail" class="form-check-input" value="false" type="radio" />
                 </div>
                 <div class="form-check form-check-inline">
-                    <label asp-for="ReviewRecommendation" class="form-check-label">None</label>
-                    <input asp-for="ReviewRecommendation" class="form-check-input" value="" type="radio" checked />
+                    <label for="ReviewRecommendation-none" class="form-check-label">None</label>
+                    <input asp-for="ReviewRecommendation" id="ReviewRecommendation-none" class="form-check-input" value="" type="radio" checked />
                 </div>
             </div>
             <br />
@@ -56,12 +56,12 @@
                 <label asp-for="FlaggedForAudit" class="control-label">Flagged For Audit</label>
                 <br />
                 <div class="form-check form-check-inline">
-                    <label asp-for="FlaggedForAudit" class="form-check-label">Yes</label>
-                    <input asp-for="FlaggedForAudit" class="form-check-input" value="true" type="radio" />
+                    <label for="FlaggedForAudit-yes" class="form-check-label">Yes</label>
+                    <input asp-for="FlaggedForAudit" id="FlaggedForAudit-yes" class="form-check-input" value="true" type="radio" />
                 </div>
                 <div class="form-check form-check-inline">
-                    <label asp-for="FlaggedForAudit" class="form-check-label">No</label>
-                    <input asp-for="FlaggedForAudit" class="form-check-input" value="false" type="radio" checked />
+                    <label for="FlaggedForAudit-no" class="form-check-label">No</label>
+                    <input asp-for="FlaggedForAudit" id="FlaggedForAudit-no" class="form-check-input" value="false" type="radio" checked />
                 </div>
             </div>
             <br />

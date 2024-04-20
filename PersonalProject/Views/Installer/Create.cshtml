@@ -15,12 +15,12 @@
                 <label asp-for="FlaggedForAudit" class="control-label">Flagged For Audit</label>
                 <br />
                 <div class="form-check form-check-inline">
-                    <label asp-for="FlaggedForAudit" class="form-check-label">Yes</label>
-                    <input asp-for="FlaggedForAudit" class="form-check-input" value="true" type="radio" />
+                    <label for="FlaggedForAudit-yes" class="form-check-label">Yes</label>
+                    <input asp-for="FlaggedForAudit" id="FlaggedForAudit-yes" class="form-check-input" value="true" type="radio" />
                 </div>
                 <div class="form-check form-check-inline">
-                    <label asp-for="FlaggedForAudit" class="form-check-label">No</label>
-                    <input asp-for="FlaggedForAudit" class="form-check-input" value="false" type="radio"  checked/>
+                    <label for="FlaggedForAudit-no" class="form-check-label">No</label>
+                    <input asp-for="FlaggedForAudit" id="FlaggedForAudit-no" class="form-check-input" value="false" type="radio" checked />
                 </div>
             </div>
             <br/>

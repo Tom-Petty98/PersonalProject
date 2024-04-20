@@ -49,10 +49,13 @@ namespace PersonalProject.Provider.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EntityId = table.Column<int>(type: "int", nullable: false),
+                    EntityId = table.Column<int>(type: "int", nullable: true),
+                    EntityType = table.Column<int>(type: "int", nullable: false),
+                    UserType = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     UpdateMethodMessage = table.Column<string>(type: "nvarchar(127)", maxLength: 127, nullable: false),
                     Payload = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ResultStatus = table.Column<int>(type: "int", nullable: true),
                     EventTimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -123,6 +126,20 @@ namespace PersonalProject.Provider.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    IsInternalRole = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserInviteStatuses",
                 columns: table => new
                 {
@@ -137,16 +154,24 @@ namespace PersonalProject.Provider.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    InstallerId = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    AzureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsObselete = table.Column<bool>(type: "bit", nullable: false),
+                    IsInternalUser = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,30 +248,6 @@ namespace PersonalProject.Provider.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstallerStatusHistories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InstallerId = table.Column<int>(type: "int", nullable: false),
-                    InstallerStatusId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StatusChangedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ApplicationStatusId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InstallerStatusHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InstallerStatusHistories_ApplicationStatuses_ApplicationStatusId",
-                        column: x => x.ApplicationStatusId,
-                        principalTable: "ApplicationStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Documents",
                 columns: table => new
                 {
@@ -255,14 +256,13 @@ namespace PersonalProject.Provider.Migrations
                     DocumentName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     AzureDocumentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EntityId = table.Column<int>(type: "int", nullable: true),
-                    DocumeentTypeId = table.Column<int>(type: "int", nullable: false),
+                    DocumentTypeId = table.Column<int>(type: "int", nullable: false),
                     FileSizeBytes = table.Column<long>(type: "bigint", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DocumentTypeId = table.Column<int>(type: "int", nullable: false)
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,16 +276,37 @@ namespace PersonalProject.Provider.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "InstallerStatusHistories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InstallerId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AzureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    IsObselete = table.Column<bool>(type: "bit", nullable: false),
+                    InstallerStatusId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StatusChangedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstallerStatusHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InstallerStatusHistories_InstallerStatuses_InstallerStatusId",
+                        column: x => x.InstallerStatusId,
+                        principalTable: "InstallerStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserInvites",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserInviteStatusId = table.Column<int>(type: "int", nullable: false),
+                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -293,11 +314,41 @@ namespace PersonalProject.Provider.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_UserInvites", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_UserRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "UserRoles",
+                        name: "FK_UserInvites_UserInviteStatuses_UserInviteStatusId",
+                        column: x => x.UserInviteStatusId,
+                        principalTable: "UserInviteStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserInvites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    RolesId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.RolesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RolesId",
+                        column: x => x.RolesId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -312,7 +363,9 @@ namespace PersonalProject.Provider.Migrations
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     FlaggedForAudit = table.Column<bool>(type: "bit", nullable: true),
                     ReviewRecommendation = table.Column<bool>(type: "bit", nullable: true),
+                    InstallerId = table.Column<int>(type: "int", nullable: false),
                     ApplicationDetailId = table.Column<int>(type: "int", nullable: false),
+                    CurrentContactId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -331,6 +384,12 @@ namespace PersonalProject.Provider.Migrations
                         name: "FK_Applications_ApplicationStatuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "ApplicationStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Applications_Users_CurrentContactId",
+                        column: x => x.CurrentContactId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -368,37 +427,6 @@ namespace PersonalProject.Provider.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserInvites",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserInviteStatusId = table.Column<int>(type: "int", nullable: false),
-                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserInvites", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserInvites_UserInviteStatuses_UserInviteStatusId",
-                        column: x => x.UserInviteStatusId,
-                        principalTable: "UserInviteStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserInvites_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "GlobalSettings",
                 columns: new[] { "Id", "NextAppNumber", "NextInstallerNumber" },
@@ -410,9 +438,25 @@ namespace PersonalProject.Provider.Migrations
                 column: "InstallationAddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationStatusHistories_ApplicationStatusId",
-                table: "ApplicationStatusHistories",
-                column: "ApplicationStatusId");
+                name: "IX_Applications_ApplicationDetailId",
+                table: "Applications",
+                column: "ApplicationDetailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_CurrentContactId",
+                table: "Applications",
+                column: "CurrentContactId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_RefNumber",
+                table: "Applications",
+                column: "RefNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_StatusId",
+                table: "Applications",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "AS_Index_Code",
@@ -420,14 +464,9 @@ namespace PersonalProject.Provider.Migrations
                 column: "Code");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_ApplicationDetailId",
-                table: "Applications",
-                column: "ApplicationDetailId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Applications_StatusId",
-                table: "Applications",
-                column: "StatusId");
+                name: "IX_ApplicationStatusHistories_ApplicationStatusId",
+                table: "ApplicationStatusHistories",
+                column: "ApplicationStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_DocumentTypeId",
@@ -440,19 +479,15 @@ namespace PersonalProject.Provider.Migrations
                 column: "InstallerAddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstallerStatusHistories_ApplicationStatusId",
-                table: "InstallerStatusHistories",
-                column: "ApplicationStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "AS_Index_Code",
-                table: "InstallerStatuses",
-                column: "Code");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Installers_InstallerDetailId",
                 table: "Installers",
                 column: "InstallerDetailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Installers_RefNumber",
+                table: "Installers",
+                column: "RefNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Installers_StatusId",
@@ -460,9 +495,14 @@ namespace PersonalProject.Provider.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "AS_Index_Code",
-                table: "UserInviteStatuses",
+                name: "IS_Index_Code",
+                table: "InstallerStatuses",
                 column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InstallerStatusHistories_InstallerStatusId",
+                table: "InstallerStatusHistories",
+                column: "InstallerStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInvites_UserId",
@@ -475,19 +515,24 @@ namespace PersonalProject.Provider.Migrations
                 column: "UserInviteStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
-                column: "RoleId");
+                name: "UIS_Index_Code",
+                table: "UserInviteStatuses",
+                column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UsersId",
+                table: "UserRoles",
+                column: "UsersId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationStatusHistories");
+                name: "Applications");
 
             migrationBuilder.DropTable(
-                name: "Applications");
+                name: "ApplicationStatusHistories");
 
             migrationBuilder.DropTable(
                 name: "AuditLogs");
@@ -499,10 +544,10 @@ namespace PersonalProject.Provider.Migrations
                 name: "GlobalSettings");
 
             migrationBuilder.DropTable(
-                name: "InstallerStatusHistories");
+                name: "Installers");
 
             migrationBuilder.DropTable(
-                name: "Installers");
+                name: "InstallerStatusHistories");
 
             migrationBuilder.DropTable(
                 name: "Notes");
@@ -511,13 +556,16 @@ namespace PersonalProject.Provider.Migrations
                 name: "UserInvites");
 
             migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
                 name: "ApplicationDetails");
 
             migrationBuilder.DropTable(
-                name: "DocumentTypes");
+                name: "ApplicationStatuses");
 
             migrationBuilder.DropTable(
-                name: "ApplicationStatuses");
+                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
                 name: "InstallerDetails");
@@ -529,13 +577,13 @@ namespace PersonalProject.Provider.Migrations
                 name: "UserInviteStatuses");
 
             migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Address");
-
-            migrationBuilder.DropTable(
-                name: "UserRoles");
         }
     }
 }
