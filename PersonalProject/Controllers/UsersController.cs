@@ -73,7 +73,7 @@ public class UsersController : Controller
             };
 
             await _updateUsersService.AddUser(user);
-            return RedirectToAction("Details");
+            return RedirectToAction(nameof(Details), new { installerId = user.InstallerId });
         }
         return View();
     }
@@ -89,7 +89,8 @@ public class UsersController : Controller
         {
             Email = user.Email,
             RoleId = user.Roles.First().Id,
-            UserId = user.Id
+            UserId = user.Id,
+            InstallerId = user.InstallerId
         };
 
         return View(model);
@@ -106,10 +107,7 @@ public class UsersController : Controller
 
             if (user == null) return NotFound();
             user.Email = model.Email;
-            user.Roles = new List<Role> {
-                new() { 
-                    Id = model.RoleId 
-                } };
+            user.Roles = new List<Role> { role };
             await _updateUsersService.UpdateUser(user);
             return RedirectToAction(nameof(Details), new { installerId = user.InstallerId });
         }       

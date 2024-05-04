@@ -42,14 +42,14 @@ public class GetUsersProvider : IGetUsersProvider
     public async Task<User?> GetUserById(int userId)
     {
         return await _context.Users
-            .Include("Roles")
+            .Include(x => x.Roles)
             .FirstOrDefaultAsync(x => x.Id == userId);
     }  
 
     public async Task<List<User>?> GetUsersByInstallerId(int installerId)
     {
         return await _context.Users
-            .Include("Roles")
+            .Include(x => x.Roles)
             .Where(x => x.InstallerId == installerId).ToListAsync();
     }
 

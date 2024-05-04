@@ -9,4 +9,5 @@ public class EditUserViewModel
     public string Email { get; set; } = string.Empty;
     public int RoleId { get; set; }
     public int UserId { get; set; }
+    public int InstallerId { get; set; }
 }
