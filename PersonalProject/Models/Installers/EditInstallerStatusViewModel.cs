@@ -5,6 +5,8 @@ namespace PersonalProject.InternalPortal.Models.Installers;
 public class EditInstallerStatusViewModel
 {
     public IEnumerable<InstallerStatus>? InstallerStatuses { get; set; }
+    public IEnumerable<User>? Users { get; set; }
+    public int? UserId { get; set; }
     public string RefNumber { get; set; } = string.Empty;
     public int InstallerId { get; set; }
     public int StatusId { get; set; }

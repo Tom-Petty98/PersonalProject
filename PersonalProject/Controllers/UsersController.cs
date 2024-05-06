@@ -115,7 +115,7 @@ public class UsersController : Controller
         return View();
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> Delete(int userId)
     {
         var user = await _getUsersService.GetUserByIdAsync(userId);
@@ -129,7 +129,7 @@ public class UsersController : Controller
         return RedirectToAction(nameof(Details), new { installerId = user.InstallerId });
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> Reactivate(int userId)
     {
         var user = await _getUsersService.GetUserByIdAsync(userId);

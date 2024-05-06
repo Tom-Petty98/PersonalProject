@@ -25,18 +25,31 @@ public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsSe
 
     private HttpClient BuildClient() => _httpClientFactory.CreateClient(_clientName);
 
-    public Task<Application> AddApplication(Application application)
+    public async Task<Application> AddApplication(Application application)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(AddApplication));
+        var target = "Applications/AddApplication";
+
+        return await PostAsync<Application, Application>(httpClient, target, application, null, null)
+            ?? throw new Exception("Null response recieved");
     }
 
-    public Task<bool> UpdateApplication(Application application)
+    public async Task<bool> UpdateApplication(Application application)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateApplication));
+        var target = "Applications/UpdateApplication";
+
+        return await PostAsync<bool, Application>(httpClient, target, application, null, null);
     }
 
-    public Task<bool> UpdateApplicationDetail(ApplicationDetail applicationDetail)
+    public async Task<bool> UpdateApplicationDetail(ApplicationDetail applicationDetail)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateApplicationDetail));
+        var target = "Applications/UpdateApplicationDetail";
+
+        return await PostAsync<bool, ApplicationDetail>(httpClient, target, applicationDetail, null, null);
     }
 }

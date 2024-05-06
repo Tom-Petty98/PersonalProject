@@ -1,14 +1,14 @@
-﻿@page
+﻿@using PersonalProject.InternalPortal.Services.Helpers
 @model IEnumerable<PersonalProject.Domain.Entities.ApplicationDashboard>
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Application Dashboard";
 }
 
 <h1>Applications</h1>
 
-<p>
-    <a asp-page="Applications/Create">Create New</a>
-</p>
+<div>
+    <a href="/Home/Index">Installer Dashboard</a>
+</div>
 
 <table class="table">
     <thead>
@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RefNumber)
+                        <a href="/Installer/EditStatus?refNumber=@item.RefNumber">@item.RefNumber</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Postcode)
@@ -44,11 +44,7 @@
                         @Html.DisplayFor(modelItem => item.ReviewRecommendation)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastStatusChangeDate)
-                    </td>
-                    <td>
-                        <a asp-page="./Applications/Edit" asp-route-refNumber="@item.RefNumber">Edit</a> |
-                        <a asp-page="./Applications/Details" asp-route-refNumber="@item.RefNumber">Details</a>
+                        @item.LastStatusChangeDate.ToUiDateTimeFormat()
                     </td>
                 </tr>
             }

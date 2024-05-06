@@ -1,12 +1,13 @@
 ﻿@using PersonalProject.InternalPortal.Services.Helpers
-@model IEnumerable<PersonalProject.Domain.Entities.InstallerDashboard>?
+@model IEnumerable<PersonalProject.Domain.Entities.InstallerDashboard>
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Installer Dashboard";
 }
 
 <h1>Installers</h1>
 
 <p>
+    <a href="/Home/ApplicationDashboard">View applications</a>
     <a href="Installer/Create">Create New</a>
 </p>
 

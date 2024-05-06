@@ -12,14 +12,17 @@ public class InstallerController : Controller
     private readonly ILogger<InstallerController> _logger;
     private readonly IGetInstallerService _getInstallerService;
     private readonly IUpdateInstallerService _updateInstallerService;
+    private readonly IGetUsersService _getUsersService;
 
     public InstallerController(ILogger<InstallerController> logger,
         IGetInstallerService getInstallerService,
-        IUpdateInstallerService updateInstallerService)
+        IUpdateInstallerService updateInstallerService,
+        IGetUsersService getUsersService)
     {
         _logger = logger;
         _getInstallerService = getInstallerService;
         _updateInstallerService = updateInstallerService;
+        _getUsersService = getUsersService;
     }
 
     [HttpGet]    
@@ -73,9 +76,12 @@ public class InstallerController : Controller
         {
             return NotFound();
         }
+        var users = await _getUsersService.GetUsersByInstallerIdAsync(installer.Id);
+
         var model = new EditInstallerStatusViewModel()
         {
             InstallerStatuses = installerStatuses,
+            Users = users,
             RefNumber = installer.RefNumber,
             InstallerId = installer.Id,
             StatusId = installer.StatusId,
@@ -86,6 +92,17 @@ public class InstallerController : Controller
             InstallerDetail = installer.InstallerDetail
         };
         return View("EditStatus", model);
+    }
+
+    [HttpPost]
+    public IActionResult CreateApplication(EditInstallerStatusViewModel model)
+    {
+        if(model.UserId == null)
+        {
+            ModelState.AddModelError(nameof(model.UserId), "To create an application select a user");
+            return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber });
+        }
+        return RedirectToAction("Create", "Application", new { userId = model.UserId, installerId = model.InstallerId });
     }
 
     [HttpPost]

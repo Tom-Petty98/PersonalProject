@@ -2,12 +2,11 @@
 
 namespace PersonalProject.InternalPortal.Models.Applications;
 
-public class CreateApplicationViewModel
+public class EditApplicationDetailsViewModel
 {
-    public int UserId { get; set; }
-    public int InstallerId { get; set; }
+    public string ApplicationStatusDescription { get; set; } = string.Empty;
+    public string RefNumber { get; set; } = string.Empty;
     public string InstallerName { get; set; } = string.Empty;
-    public bool? FlaggedForAudit { get; set; }
     public DateTime? SubmittedDate { get; set; }
     [Required(ErrorMessage = "Property owner email is required"), StringLength(255, MinimumLength = 2)]
     [EmailAddress]
@@ -20,4 +19,6 @@ public class CreateApplicationViewModel
     public string? AddressLine2 { get; set; }
     [StringLength(127, MinimumLength = 2)]
     public string? AddressLine3 { get; set; }
+    public string LastEditedBy { get; set; } = string.Empty;
+    public DateTime LastEditedDate { get; set; }
 }

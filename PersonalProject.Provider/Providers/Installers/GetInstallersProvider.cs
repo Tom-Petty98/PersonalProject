@@ -8,6 +8,7 @@ public interface IGetInstallersProvider
 {
     Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber);
     Task<Installer?> GetInstallerById(int installerId);
+    Task<string> GetInstallerNameById(int installerId);
     Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
     Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync();
     Task<PagedResult<InstallerDashboard>> GetPagedInstallers(int page = 1, int pageSize = 20,
@@ -51,6 +52,16 @@ public class GetInstallersProvider : IGetInstallersProvider
             .Include(x => x.InstallerDetail)
             .Include(x => x.InstallerDetail.InstallerAddress)
             .FirstOrDefaultAsync(x => x.Id == installerId);
+    }
+
+    public async Task<string> GetInstallerNameById(int installerId)
+    {
+        var installer = await _context.Installers
+            .Include(x => x.InstallerDetail)
+            .FirstOrDefaultAsync(x => x.Id == installerId);
+
+        if (installer == null) throw new BadRequestException("installer not found", System.Net.HttpStatusCode.NotFound);
+        return installer.InstallerDetail.InstallerName;
     }
 
     public Task<InstallerDetail?> GetInstallerDetailByReferenceNumberAsync(string refNumber)

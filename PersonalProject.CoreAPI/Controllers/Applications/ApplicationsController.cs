@@ -50,8 +50,28 @@ public class ApplicationsController : ControllerBase
 
         try
         {
-            var updatedApp = _updateApplicationService.AddApplication(application);
+            var updatedApp = _updateApplicationService.UpdateApplication(application);
             _logger.LogInformation($"Sucessfully updated application {application.RefNumber}");
+            return Ok(updatedApp);
+        }
+        catch (Exception ex)
+        {
+            const string message = "Unable to update application";
+            _logger.LogError(ex, message);
+            return BadRequest($"{message} - {ex.Message}");
+        }
+    }
+
+    [HttpPost]
+    [Route("UpdateApplicationDetail")]
+    public IActionResult UpdateApplicationDetail([FromBody] ApplicationDetail applicationDetail)
+    {
+        _logger.LogInformation($"Updating application detail {applicationDetail.Id}");
+
+        try
+        {
+            var updatedApp = _updateApplicationService.UpdateApplicationDetail(applicationDetail);
+            _logger.LogInformation($"Sucessfully updated application detail {applicationDetail.Id}");
             return Ok(updatedApp);
         }
         catch (Exception ex)

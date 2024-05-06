@@ -9,10 +9,8 @@ namespace PersonalProject.InternalPortal.Services.Applications;
 public interface IGetApplicationsService
 {
     Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber);
-    Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
-
     Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync();
-
+    Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
     Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter);
 }
 
@@ -28,19 +26,33 @@ public class GetApplicationsService : BaseRequestsClient<GetApplicationsService>
 
     private HttpClient BuildClient() => _httpClientFactory.CreateClient(_clientName);
 
-    public Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView()
+    public async Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync()
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetAllApplicationStatusesAsync));
+        var target = "Applications/GetAllApplicationStatuses";
+
+        var responseObject = await GetAsync<IEnumerable<ApplicationStatus>>(httpClient, target, null, null);
+        return responseObject ?? new List<ApplicationStatus>();
     }
 
-    public Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync()
+    public async Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetApplicationByReferenceNumberAsync));
+        var target = $"Applications/GetApplicationByReferenceNumber/{refNumber}";
+
+        return await GetAsync<Application?>(httpClient, target, null, null);
     }
 
-    public Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)
+    public async Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView()
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetAllApplicationsDashboardView));
+        var target = "Applications/GetAllApplicationsDashboardView";
+
+        var responseObject = await GetAsync<List<ApplicationDashboard>>(httpClient, target, null, null);
+        return responseObject ?? new List<ApplicationDashboard>();
     }
 
     public Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter)

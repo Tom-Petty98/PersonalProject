@@ -1,58 +1,34 @@
-﻿@using PersonalProject.InternalPortal.Models.Installers
-@model EditInstallerStatusViewModel
+﻿@using PersonalProject.InternalPortal.Models.Applications
+@model EditApplicationStatusViewModel
 @{
-    ViewData["Title"] = "Edit Installer Status";
+    ViewData["Title"] = "Edit Application Status";
 }
 
-<h1>@Model.InstallerDetail!.InstallerName</h1>
-<h3>@Model.RefNumber</h3>
-<br />
+<h1>
+    Edit Application @Model.RefNumber
+    <small class="text-muted"> (@Model.InstallerName)</small>
+</h1>
+
 <div>
-    <a href="/">Installer Dashboard</a>
-    <a class="btn btn-primary" href="../Users/Details?installerId=@Model.InstallerId" role="button">Manage Users</a>
-    @* <a class="btn btn-primary" href="#" role="button">Link</a> *@
+    <a href="/Home/ApplicationDashboard">Application Dashboard</a>
 </div>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <h2>Create New Application</h2>
-        <br />
-
-        <form method="post" asp-action="CreateApplication">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="InstallerId" type="hidden">
-            <select class="form-select" asp-for="UserId">
-                @foreach (var user in Model.Users!)
-                {
-                    <option value="@user.Id">@user.Email</option>
-                }
-            </select>
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Create Application" class="btn btn-primary" />
-            </div>
-        </form>
-        
-        <br />
-        <a class="btn btn-primary" href="/Application/Create?userId=@Model.RefNumber">Edit Details</a>
-        <br />
-        <hr/>
-        <br/>
-
-        <h2>Edit Installer Status</h2>
+        <h2>Edit Application Status</h2>
         <br />
 
         <p><strong>Last edited by: </strong>@Model.LastEditedBy</p>
         <p><strong>Last edited date: </strong>@Model.LastEditedDate</p>
 
-        <form method="post" asp-action="EditStatus">      
+        <form method="post" asp-action="EditStatus">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="RefNumber" type="hidden">
 
             <div class="form-group">
                 <label asp-for="StatusId" is="status-heading" class="control-label">Status</label>
                 <select class="form-select" asp-for="StatusId">
-                    @foreach (var status in Model.InstallerStatuses!)
+                    @foreach (var status in Model.ApplicationStatuses!)
                     {
                         <option value="@status.Id">@status.Description</option>
                     }
@@ -91,46 +67,49 @@
             <br />
             <div class="form-group">
                 <input type="submit" value="Edit Status" class="btn btn-primary" />
-            </div>        
+            </div>
         </form>
 
-        <br/>
-        <hr/>
-        <br/>
+        <br />
+        <hr />
+        <br />
 
-        <h2>Installer Details</h2>
+        <h2>Application Details</h2>
 
         @{
-            string editedBy = Model.InstallerDetail.LastUpdatedBy ?? Model.InstallerDetail.CreatedBy;
-            string editedDate = Model.InstallerDetail.LastUpdatedBy ?? Model.InstallerDetail.CreatedBy;
+            string editedBy = Model.ApplicationDetail.LastUpdatedBy ?? Model.ApplicationDetail.CreatedBy;
+            string editedDate = Model.ApplicationDetail.LastUpdatedBy ?? Model.ApplicationDetail.CreatedBy;
 
             <p><strong>Last edited by: </strong>@editedBy</p>
             <p><strong>Last edited date: </strong>@editedDate</p>
         }
-        <p><strong>Company number: </strong>@Model.InstallerDetail.CompanyNumber</p>
-        @if(Model.InstallerDetail.InstallerAddress != null)
+        <p><strong>Submitted Date: </strong>@Model.ApplicationDetail.SubmittedDate</p>
+        <p><strong>Current Contact: </strong>@Model.CurrentContact.Email</p>
+        <p><strong>Property Owner Email: </strong>@Model.ApplicationDetail.PropertyOwnerEmail</p>
+
+        <p><strong>Postcode: </strong>@Model.ApplicationDetail.InstallationAddress.Postcode</p>
+        <p><strong>UPRN: </strong>@Model.ApplicationDetail.InstallationAddress.UPRN</p>
+        <p><strong>Address Line 1: </strong>@Model.ApplicationDetail.InstallationAddress.AddressLine1</p>
+        @if (Model.ApplicationDetail.InstallationAddress.AddressLine2 != null)
         {
-            <p><strong>Postcode: </strong>@Model.InstallerDetail.InstallerAddress.Postcode</p>
-            <p><strong>UPRN: </strong>@Model.InstallerDetail.InstallerAddress.UPRN</p>
-            <p><strong>Address Line 1: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine1</p>
-            @if (Model.InstallerDetail.InstallerAddress.AddressLine2 != null)
-            {
-                <p><strong>Address Line 2: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine2</p>
-            }
-            @if (Model.InstallerDetail.InstallerAddress.AddressLine3 != null)
-            {
-                <p><strong>Address Line 3: </strong>@Model.InstallerDetail.InstallerAddress.AddressLine3</p>
-            }
+            <p><strong>Address Line 2: </strong>@Model.ApplicationDetail.InstallationAddress.AddressLine2</p>
         }
-        <a href="/Installer/EditDetails?refNumber=@Model.RefNumber">Edit Details</a>
-            
+        @if (Model.ApplicationDetail.InstallationAddress.AddressLine3 != null)
+        {
+            <p><strong>Address Line 3: </strong>@Model.ApplicationDetail.InstallationAddress.AddressLine3</p>
+        }
+
+        <a href="/Application/EditDetails?refNumber=@Model.RefNumber">Edit Details</a>
+
     </div>
 </div>
 <br />
 <div>
-    <a href="/">Back to List</a>
+    <a href="/Home/ApplicationDashboard">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

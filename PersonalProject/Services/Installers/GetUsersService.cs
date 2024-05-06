@@ -6,7 +6,7 @@ namespace PersonalProject.InternalPortal.Services.Installers;
 
 public interface IGetUsersService
 {
-    Task<List<User>?> GetUsersByInstallerIdAsync(int userId);
+    Task<List<User>?> GetUsersByInstallerIdAsync(int installerId);
     Task<User?> GetUserByIdAsync(int userId);
     Task<IEnumerable<Role>> GetUserRolesAsync(bool getInternal);
 }

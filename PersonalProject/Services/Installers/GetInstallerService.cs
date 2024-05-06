@@ -2,7 +2,6 @@
 using PersonalProject.Domain.Request;
 using PersonalProject.InternalPortal.Services.Helpers;
 using Polly.Registry;
-using System.Security.Cryptography;
 
 namespace PersonalProject.InternalPortal.Services.Installers;
 
@@ -10,8 +9,9 @@ public interface IGetInstallerService
 {
     Task<Installer?> GetInstallerByReferenceNumberAsync(string refNumber);
     Task<Installer?> GetInstallerByIdAsync(int installerId);
-    Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
+    Task<string> GetInstallerNameByIdAsync(int installerId);
     Task<IEnumerable<InstallerStatus>> GetAllInstallerStatusesAsync();
+    Task<IEnumerable<InstallerDashboard>> GetAllInstallersDashboardView();
     Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter);
 }
 
@@ -63,6 +63,15 @@ public class GetInstallerService : BaseRequestsClient<GetInstallerService>, IGet
         var target = $"Installers/GetInstallerById/{installerId}";
 
         return await GetAsync<Installer?>(httpClient, target, null, null);
+    }
+
+    public async Task<string> GetInstallerNameByIdAsync(int installerId)
+    {
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetInstallerNameByIdAsync));
+        var target = $"Installers/GetInstallerNameById/{installerId}";
+
+        return await GetAsync<string>(httpClient, target, null, null) ?? "";
     }
 
     public async Task<PagedResult<InstallerDashboard>> GetPagedInstallers(DashboardFilter dashboardFilter)
