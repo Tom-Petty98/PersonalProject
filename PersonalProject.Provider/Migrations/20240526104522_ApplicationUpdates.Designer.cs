@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalProject.Provider;
 
@@ -11,9 +12,11 @@ using PersonalProject.Provider;
 namespace PersonalProject.Provider.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526104522_ApplicationUpdates")]
+    partial class ApplicationUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.Application", b =>
@@ -113,7 +116,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Applications", (string)null);
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.ApplicationDashboard", b =>
@@ -193,7 +196,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("TechTypeId");
 
-                    b.ToTable("ApplicationDetails", (string)null);
+                    b.ToTable("ApplicationDetails");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.ApplicationStatus", b =>
@@ -223,7 +226,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasIndex("Code")
                         .HasDatabaseName("AS_Index_Code");
 
-                    b.ToTable("ApplicationStatuses", (string)null);
+                    b.ToTable("ApplicationStatuses");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.ApplicationStatusHistory", b =>
@@ -255,7 +258,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("ApplicationStatusId");
 
-                    b.ToTable("ApplicationStatusHistories", (string)null);
+                    b.ToTable("ApplicationStatusHistories");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.AuditLog", b =>
@@ -297,7 +300,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.Document", b =>
@@ -350,7 +353,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("DocumentTypeId");
 
-                    b.ToTable("Documents", (string)null);
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.DocumentType", b =>
@@ -368,7 +371,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentTypes", (string)null);
+                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.GlobalSettings", b =>
@@ -387,7 +390,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GlobalSettings", (string)null);
+                    b.ToTable("GlobalSettings");
 
                     b.HasData(
                         new
@@ -447,7 +450,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Installers", (string)null);
+                    b.ToTable("Installers");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.InstallerDashboard", b =>
@@ -516,7 +519,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("InstallerAddressId");
 
-                    b.ToTable("InstallerDetails", (string)null);
+                    b.ToTable("InstallerDetails");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.InstallerStatus", b =>
@@ -546,7 +549,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasIndex("Code")
                         .HasDatabaseName("IS_Index_Code");
 
-                    b.ToTable("InstallerStatuses", (string)null);
+                    b.ToTable("InstallerStatuses");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.InstallerStatusHistory", b =>
@@ -578,7 +581,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("InstallerStatusId");
 
-                    b.ToTable("InstallerStatusHistories", (string)null);
+                    b.ToTable("InstallerStatusHistories");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.Note", b =>
@@ -622,7 +625,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.Role", b =>
@@ -643,7 +646,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.TechType", b =>
@@ -663,7 +666,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TechTypes", (string)null);
+                    b.ToTable("TechTypes");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.User", b =>
@@ -708,7 +711,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.UserInvite", b =>
@@ -749,7 +752,7 @@ namespace PersonalProject.Provider.Migrations
 
                     b.HasIndex("UserInviteStatusId");
 
-                    b.ToTable("UserInvites", (string)null);
+                    b.ToTable("UserInvites");
                 });
 
             modelBuilder.Entity("PersonalProject.Domain.Entities.UserInviteStatus", b =>
@@ -776,7 +779,7 @@ namespace PersonalProject.Provider.Migrations
                     b.HasIndex("Code")
                         .HasDatabaseName("UIS_Index_Code");
 
-                    b.ToTable("UserInviteStatuses", (string)null);
+                    b.ToTable("UserInviteStatuses");
                 });
 
             modelBuilder.Entity("RoleUser", b =>

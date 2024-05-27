@@ -28,6 +28,17 @@ EXECUTE [dbo].[uspAddInstallerStatus] 9, 'REVOKED', 'Revoked',  90;
 
 SET IDENTITY_INSERT [dbo].[InstallerStatuses] OFF;
 
+SET IDENTITY_INSERT [dbo].[TechTypes] ON;
+
+EXECUTE [dbo].[uspAddTechType] 1, 'Air source heat pump', 10;
+EXECUTE [dbo].[uspAddTechType] 2, 'Ground source heat pump', 20;
+EXECUTE [dbo].[uspAddTechType] 3, 'Water source heat pump ', 30;
+EXECUTE [dbo].[uspAddTechType] 4, 'Shared heat pump', 40;
+EXECUTE [dbo].[uspAddTechType] 5, 'Biomass boiler', 50;
+EXECUTE [dbo].[uspAddTechType] 6, 'Solar heating system', 60;
+
+SET IDENTITY_INSERT [dbo].[TechTypes] OFF;
+
 SET IDENTITY_INSERT [dbo].[UserInviteStatuses] ON;
 
 EXECUTE [dbo].[uspAddUserInviteStatus] 1, 'INVITED', 'Invited';

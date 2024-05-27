@@ -10,14 +10,19 @@ App.RefNumber AS 'RefNumber',
 Addr.Postcode,
 AStat.Description AS 'StatusDescription',
 AStat.Code AS 'StatusCode',
---CONVERT(VARCHAR, App.ReviewRecommendation) AS 'ReviewRecommendation',
---CONVERT(VARCHAR, App.FlaggedForAudit) AS 'FlaggedForAudit',
-ReviewRecommendation,
-App.FlaggedForAudit,
+CASE 
+	WHEN App.ReviewRecommendation = 1 THEN 'Pass'
+	WHEN App.ReviewRecommendation = 0 THEN 'Fail'
+	ELSE 'None'
+END AS 'ReviewRecommendation',
+CASE 
+	WHEN App.FlaggedForAudit = 1 THEN 'True'
+	ELSE 'False'
+END AS 'FlaggedForAudit',
 (SELECT StartDate FROM ApplicationStatusHistories WHERE ApplicationId = App.Id AND EndDate IS NULL) AS 'LastStatusChangeDate'
 FROM [dbo].[Applications] AS App
 INNER JOIN [dbo].[ApplicationStatuses] AS AStat ON App.StatusId = AStat.Id
 INNER JOIN [dbo].[ApplicationDetails] AS AppD ON App.ApplicationDetailId = AppD.Id
-INNER JOIN [dbo].[Address] AS Addr ON AppD.InstallationAddressId = Addr.Id 
+INNER JOIN [dbo].[Addresses] AS Addr ON AppD.InstallationAddressId = Addr.Id 
 
 GO

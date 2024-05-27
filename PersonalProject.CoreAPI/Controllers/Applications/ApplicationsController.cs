@@ -24,13 +24,13 @@ public class ApplicationsController : ControllerBase
 
     [HttpPost]
     [Route("AddApplication")]
-    public IActionResult AddApplication([FromBody] Application application)
+    public async Task<IActionResult> AddApplication([FromBody] Application application)
     {
         _logger.LogInformation($"Adding new application for installer {application.InstallerId}");
         
         try
         {
-            var newApp = _updateApplicationService.AddApplication(application);
+            var newApp = await _updateApplicationService.AddApplication(application);
             _logger.LogInformation($"Sucessfully created application {application.RefNumber}");
             return Ok(newApp);
         }
@@ -44,13 +44,13 @@ public class ApplicationsController : ControllerBase
 
     [HttpPost]
     [Route("UpdateApplication")]
-    public IActionResult UpdateApplication([FromBody] Application application)
+    public async Task<IActionResult> UpdateApplication([FromBody] Application application)
     {
         _logger.LogInformation($"Updating application {application.RefNumber}");
 
         try
         {
-            var updatedApp = _updateApplicationService.UpdateApplication(application);
+            var updatedApp = await _updateApplicationService.UpdateApplication(application);
             _logger.LogInformation($"Sucessfully updated application {application.RefNumber}");
             return Ok(updatedApp);
         }
@@ -64,13 +64,13 @@ public class ApplicationsController : ControllerBase
 
     [HttpPost]
     [Route("UpdateApplicationDetail")]
-    public IActionResult UpdateApplicationDetail([FromBody] ApplicationDetail applicationDetail)
+    public async Task<IActionResult> UpdateApplicationDetail([FromBody] ApplicationDetail applicationDetail)
     {
         _logger.LogInformation($"Updating application detail {applicationDetail.Id}");
 
         try
         {
-            var updatedApp = _updateApplicationService.UpdateApplicationDetail(applicationDetail);
+            var updatedApp = await _updateApplicationService.UpdateApplicationDetail(applicationDetail);
             _logger.LogInformation($"Sucessfully updated application detail {applicationDetail.Id}");
             return Ok(updatedApp);
         }
@@ -84,9 +84,9 @@ public class ApplicationsController : ControllerBase
 
     [HttpGet]
     [Route("GetApplicationByReferenceNumber/{refNumber}")]
-    public IActionResult GetApplicationByReferenceNumber(string refNumber)
+    public async Task<IActionResult> GetApplicationByReferenceNumber(string refNumber)
     {
-        var application = _getApplicationsService.GetApplicationByReferenceNumberAsync(refNumber);
+        var application = await _getApplicationsService.GetApplicationByReferenceNumberAsync(refNumber);
 
         if (application == null) 
             return NotFound($"No application found for ref number {refNumber}");
@@ -110,8 +110,15 @@ public class ApplicationsController : ControllerBase
 
     [HttpGet]
     [Route("GetAllApplicationStatuses")]
-    public IActionResult GetAllApplicationStatuses()
+    public async Task<IActionResult> GetAllApplicationStatuses()
     {
-        return Ok(_getApplicationsService.GetAllApplicationStatusesAsync());
+        return Ok(await _getApplicationsService.GetAllApplicationStatusesAsync());
+    }
+
+    [HttpGet]
+    [Route("GetTechTypes")]
+    public async Task<IActionResult> GetTechTypes()
+    {
+        return Ok(await _getApplicationsService.GetTechTypesAsync());
     }
 }

@@ -31,7 +31,8 @@ public class ApplicationController : Controller
     public async Task<IActionResult> Create(int userId, int installerId)
     {
         var installerName = await _getInstallerService.GetInstallerNameByIdAsync(installerId);
-        if(installerName == null)
+        var techTypes = await _getApplicationsService.GetTechTypesAsync();
+        if(installerName == null || !techTypes.Any())
             return NotFound();
 
         var model = new CreateApplicationViewModel()
@@ -39,6 +40,7 @@ public class ApplicationController : Controller
             UserId = userId,
             InstallerId = installerId,
             InstallerName = installerName,
+            TechTypes = techTypes
         };
         return View(model);
     }
@@ -46,7 +48,6 @@ public class ApplicationController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateApplicationViewModel model)
     {
-
         if (ModelState.IsValid)
         {
             var application = new Application
@@ -61,6 +62,8 @@ public class ApplicationController : Controller
                 {
                     SubmittedDate = model.SubmittedDate,
                     PropertyOwnerEmail = model.PropertyOwnerEmail,
+                    TechTypeId = model.TechTypeId,
+                    EpcNumber = model.EpcNumber,
                     CreatedBy = "Unknown",
                     CreatedDate = DateTime.UtcNow,
                     InstallationAddress = new Address
@@ -75,9 +78,12 @@ public class ApplicationController : Controller
             };
 
             await _updateApplicationsService.AddApplication(application);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ApplicationDashboard", "Home");
         }
-        return View();
+
+        model.TechTypes = await _getApplicationsService.GetTechTypesAsync();
+
+        return View(model);
     }
 
     [HttpGet]
@@ -119,6 +125,7 @@ public class ApplicationController : Controller
                 return NotFound();
             }
             application.Status = null;
+            application.CurrentContact = null;
             application.StatusId = model.StatusId;
             application.ReviewRecommendation = model.ReviewRecommendation;
             application.FlaggedForAudit = model.FlaggedForAudit;
@@ -133,18 +140,23 @@ public class ApplicationController : Controller
     public async Task<IActionResult> EditDetails(string refNumber)
     {
         var application = await _getApplicationsService.GetApplicationByReferenceNumberAsync(refNumber);
-        if (application == null)
+        var techTypes = await _getApplicationsService.GetTechTypesAsync();
+        if (application == null || !techTypes.Any())
         {
             return NotFound();
         }
+
         var installerName = await _getInstallerService.GetInstallerNameByIdAsync(application.InstallerId);
         var applicationDetail = application.ApplicationDetail;
         var model = new EditApplicationDetailsViewModel()
         {
+            TechTypes = techTypes,
             ApplicationStatusDescription = application.Status!.Description,
             RefNumber = application.RefNumber,
             InstallerName = installerName,
             SubmittedDate = applicationDetail.SubmittedDate,
+            TechTypeId = applicationDetail.TechTypeId,
+            EpcNumber = applicationDetail.EpcNumber,
             PropertyOwnerEmail = applicationDetail.PropertyOwnerEmail,
             Postcode = applicationDetail.InstallationAddress!.Postcode,
             UPRN = applicationDetail.InstallationAddress!.UPRN,
@@ -160,16 +172,19 @@ public class ApplicationController : Controller
     [HttpPost]
     public async Task<IActionResult> EditDetails(EditApplicationDetailsViewModel model)
     {
-        if (ModelState.IsValid)
+        var application = await _getApplicationsService.GetApplicationByReferenceNumberAsync(model.RefNumber);
+        if (application == null)
         {
-            var application = await _getApplicationsService.GetApplicationByReferenceNumberAsync(model.RefNumber);
-            if (application == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        if (ModelState.IsValid)
+        {            
             var applicationDetail = application.ApplicationDetail;
 
             applicationDetail.SubmittedDate = model.SubmittedDate;
+            applicationDetail.TechTypeId = model.TechTypeId;
+            applicationDetail.TechType = null!;
+            applicationDetail.EpcNumber = model.EpcNumber;
             applicationDetail.PropertyOwnerEmail = model.PropertyOwnerEmail;
             applicationDetail.InstallationAddress!.Postcode = model.Postcode;
             applicationDetail.InstallationAddress.UPRN = model.UPRN;
@@ -181,6 +196,7 @@ public class ApplicationController : Controller
             await _updateApplicationsService.UpdateApplicationDetail(applicationDetail);
             return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber });
         }
-        return View();
+
+        return RedirectToAction(nameof(EditDetails), new { refNumber = model.RefNumber });
     }
 }

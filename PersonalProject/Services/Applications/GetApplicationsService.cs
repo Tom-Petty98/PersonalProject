@@ -10,6 +10,7 @@ public interface IGetApplicationsService
 {
     Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber);
     Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync();
+    Task<IEnumerable<TechType>> GetTechTypesAsync();
     Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
     Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter);
 }
@@ -34,6 +35,16 @@ public class GetApplicationsService : BaseRequestsClient<GetApplicationsService>
 
         var responseObject = await GetAsync<IEnumerable<ApplicationStatus>>(httpClient, target, null, null);
         return responseObject ?? new List<ApplicationStatus>();
+    }
+
+    public async Task<IEnumerable<TechType>> GetTechTypesAsync()
+    {
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetTechTypesAsync));
+        var target = "Applications/GetTechTypes";
+
+        var responseObject = await GetAsync<IEnumerable<TechType>>(httpClient, target, null, null);
+        return responseObject ?? new List<TechType>();
     }
 
     public async Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)

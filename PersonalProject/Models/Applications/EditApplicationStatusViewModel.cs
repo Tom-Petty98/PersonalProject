@@ -13,6 +13,6 @@ public class EditApplicationStatusViewModel
     public string LastEditedBy { get; set; } = string.Empty;
     public DateTime LastEditedDate { get; set; }
     public string InstallerName { get; set; } = string.Empty;
-    public virtual User CurrentContact { get; set; } = new();
+    public virtual User? CurrentContact { get; set; }
     public ApplicationDetail ApplicationDetail { get; set; } = new();
 }

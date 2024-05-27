@@ -6,7 +6,7 @@ public class ApplicationDashboard
     public string? Postcode { get; set; }
     public string? StatusDescription { get; set; }
     public string? StatusCode { get; set; }
-    public bool? ReviewRecommendation { get; set; }
-    public bool? FlaggedForAudit { get; set; }
+    public string? ReviewRecommendation { get; set; }
+    public string? FlaggedForAudit { get; set; }
     public DateTime? LastStatusChangeDate { get; set; }
 }

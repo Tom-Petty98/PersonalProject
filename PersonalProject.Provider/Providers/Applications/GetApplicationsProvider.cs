@@ -8,8 +8,8 @@ public interface IGetApplicationsProvider
 {
     Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber);
     Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
-
     Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync();
+    Task<IEnumerable<TechType>> GetTechTypesAsync();
 
     Task<PagedResult<ApplicationDashboard>> GetPagedApplications(int page = 1, int pageSize = 20,
         string sortBy = "RefNumber", bool orderByDescending = true,
@@ -35,12 +35,19 @@ public class GetApplicationsProvider : IGetApplicationsProvider
         return await _context.ApplicationStatuses.OrderBy(x => x.SortOrder).ToListAsync();
     }
 
+    public async Task<IEnumerable<TechType>> GetTechTypesAsync()
+    {
+        return await _context.TechTypes.OrderBy(x => x.SortOrder).ToListAsync();
+    }
+
     public async Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)
     {
         return await _context.Applications
             .Include(x => x.Status)
             .Include(x => x.ApplicationDetail)
+            .Include(x => x.CurrentContact)
             .Include(x => x.ApplicationDetail.InstallationAddress)
+            .Include(x => x.ApplicationDetail.TechType)
             .FirstOrDefaultAsync(x => x.RefNumber == refNumber);
     }
 

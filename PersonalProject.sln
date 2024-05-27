@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseScripts", "Database
 		DatabaseScripts\02.uspAddUserInviteStatus.sql = DatabaseScripts\02.uspAddUserInviteStatus.sql
 		DatabaseScripts\03.uspAddUserRole.sql = DatabaseScripts\03.uspAddUserRole.sql
 		DatabaseScripts\04.uspAddDocumentType.sql = DatabaseScripts\04.uspAddDocumentType.sql
+		DatabaseScripts\05.uspAddTechType.sql = DatabaseScripts\05.uspAddTechType.sql
 		DatabaseScripts\50.vw_Dashboard_Application.sql = DatabaseScripts\50.vw_Dashboard_Application.sql
 		DatabaseScripts\51.vw_Dashboard_Installer.sql = DatabaseScripts\51.vw_Dashboard_Installer.sql
 		DatabaseScripts\99.SeedApplicationDataTables.sql = DatabaseScripts\99.SeedApplicationDataTables.sql

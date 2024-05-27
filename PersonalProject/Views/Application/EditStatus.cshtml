@@ -85,9 +85,11 @@
         }
         <p><strong>Submitted Date: </strong>@Model.ApplicationDetail.SubmittedDate</p>
         <p><strong>Current Contact: </strong>@Model.CurrentContact.Email</p>
+        <p><strong>Tech Type: </strong>@Model.ApplicationDetail.TechType!.Description</p>
+        <p><strong>EPC Reference Number: </strong>@Model.ApplicationDetail.EpcNumber</p>
         <p><strong>Property Owner Email: </strong>@Model.ApplicationDetail.PropertyOwnerEmail</p>
 
-        <p><strong>Postcode: </strong>@Model.ApplicationDetail.InstallationAddress.Postcode</p>
+        <p><strong>Postcode: </strong>@Model.ApplicationDetail.InstallationAddress!.Postcode</p>
         <p><strong>UPRN: </strong>@Model.ApplicationDetail.InstallationAddress.UPRN</p>
         <p><strong>Address Line 1: </strong>@Model.ApplicationDetail.InstallationAddress.AddressLine1</p>
         @if (Model.ApplicationDetail.InstallationAddress.AddressLine2 != null)

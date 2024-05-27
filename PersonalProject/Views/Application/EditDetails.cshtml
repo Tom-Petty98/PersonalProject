@@ -27,7 +27,28 @@
 
             <div class="form-group">
                 <label asp-for="SubmittedDate">Submitted Date</label>
+                <span asp-validation-for="SubmittedDate" class="text-danger"></span>
                 <input id="SubmittedDate" asp-for="SubmittedDate" class="form-control" type="date" />
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="TechTypeId" class="control-label">Tech Type</label>
+                <br />
+                @foreach (var techType in Model.TechTypes)
+                {
+                    <div class="form-check">
+                        <label for="TechType-@techType.Id" class="form-check-label">@techType.Description</label>
+                        <input asp-for="TechTypeId" id="TechType-@techType.Id" class="form-check-input" value="@techType.Id" type="radio" />
+                    </div>
+                }
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-12">
+                    <label asp-for="EpcNumber">EPC Reference Number</label>
+                    <span asp-validation-for="EpcNumber" class="text-danger"></span>
+                    <input id="EpcNumber" asp-for="EpcNumber" class="form-control" />
+                </div>
             </div>
             <br />
             <div class="form-group">

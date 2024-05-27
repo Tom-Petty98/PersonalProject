@@ -6,14 +6,13 @@ namespace PersonalProject.CoreAPI.Services.Applications;
 
 public interface IGetApplicationsService
 {
-
     Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber);
     Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
-
     Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter);
-
     Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync();
+    Task<IEnumerable<TechType>> GetTechTypesAsync();
 }
+
 public class GetApplicationsService : IGetApplicationsService
 {
     private readonly IGetApplicationsProvider _getApplicationsProvider;
@@ -30,6 +29,9 @@ public class GetApplicationsService : IGetApplicationsService
 
     public async Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync()
         => await _getApplicationsProvider.GetAllApplicationStatusesAsync();
+
+    public async Task<IEnumerable<TechType>> GetTechTypesAsync()
+        => await _getApplicationsProvider.GetTechTypesAsync();
 
     public async Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)
      => await _getApplicationsProvider.GetApplicationByReferenceNumberAsync(refNumber);

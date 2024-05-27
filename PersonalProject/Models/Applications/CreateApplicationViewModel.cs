@@ -1,14 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PersonalProject.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalProject.InternalPortal.Models.Applications;
 
 public class CreateApplicationViewModel
 {
+    public IEnumerable<TechType>? TechTypes { get; set; }
     public int UserId { get; set; }
     public int InstallerId { get; set; }
     public string InstallerName { get; set; } = string.Empty;
     public bool? FlaggedForAudit { get; set; }
+    [Required]
     public DateTime? SubmittedDate { get; set; }
+    [Required]
+    public int TechTypeId { get; set; }
+    public string? EpcNumber { get; set; }
     [Required(ErrorMessage = "Property owner email is required"), StringLength(255, MinimumLength = 2)]
     [EmailAddress]
     public string PropertyOwnerEmail { get; set; } = string.Empty;
