@@ -39,7 +39,7 @@ public class UpdateInstallerService : BaseRequestsClient<GetInstallerService>, I
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateInstaller));
         var target = "Installers/UpdateInstaller";
 
-        return await PostAsync<bool, Installer>(httpClient, target, installer, null, null);
+        return await PostAsync<Installer, bool>(httpClient, target, installer, null, null);
     }
 
     public async Task<bool> UpdateInstallerDetail(InstallerDetail installerDetail)
@@ -48,6 +48,6 @@ public class UpdateInstallerService : BaseRequestsClient<GetInstallerService>, I
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateInstallerDetail));
         var target = "Installers/UpdateInstallerDetail";
 
-        return await PostAsync<bool, InstallerDetail>(httpClient, target, installerDetail, null, null);
+        return await PostAsync<InstallerDetail, bool>(httpClient, target, installerDetail, null, null);
     }
 }

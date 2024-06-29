@@ -41,7 +41,7 @@ public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsSe
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateApplication));
         var target = "Applications/UpdateApplication";
 
-        return await PostAsync<bool, Application>(httpClient, target, application, null, null);
+        return await PostAsync<Application, bool>(httpClient, target, application, null, null);
     }
 
     public async Task<bool> UpdateApplicationDetail(ApplicationDetail applicationDetail)
@@ -50,6 +50,6 @@ public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsSe
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateApplicationDetail));
         var target = "Applications/UpdateApplicationDetail";
 
-        return await PostAsync<bool, ApplicationDetail>(httpClient, target, applicationDetail, null, null);
+        return await PostAsync<ApplicationDetail, bool>(httpClient, target, applicationDetail, null, null);
     }
 }

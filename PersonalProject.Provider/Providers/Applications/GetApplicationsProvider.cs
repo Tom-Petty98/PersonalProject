@@ -10,11 +10,6 @@ public interface IGetApplicationsProvider
     Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView();
     Task<IEnumerable<ApplicationStatus>> GetAllApplicationStatusesAsync();
     Task<IEnumerable<TechType>> GetTechTypesAsync();
-
-    Task<PagedResult<ApplicationDashboard>> GetPagedApplications(int page = 1, int pageSize = 20,
-        string sortBy = "RefNumber", bool orderByDescending = true,
-        List<string>? filterApplicationStatusBy = null,
-        string? isBeingAudited = null, string? searchBy = null);
 }
 
 public class GetApplicationsProvider : IGetApplicationsProvider

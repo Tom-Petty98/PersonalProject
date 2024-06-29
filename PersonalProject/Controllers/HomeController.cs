@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PersonalProject.Domain.Request;
+using PersonalProject.InternalPortal.Models.Home;
+using PersonalProject.InternalPortal.Models.Installers;
 using PersonalProject.InternalPortal.Services.Applications;
 using PersonalProject.InternalPortal.Services.Installers;
 
@@ -6,15 +9,12 @@ namespace PersonalProject.InternalPortal.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IGetInstallerService _getInstallerService;
     private readonly IGetApplicationsService _getApplicationsService;
 
-    public HomeController(ILogger<HomeController> logger,
-        IGetInstallerService getInstallerService,
+    public HomeController(IGetInstallerService getInstallerService,
         IGetApplicationsService getApplicationsService)
     {
-        _logger = logger;
         _getInstallerService = getInstallerService;
         _getApplicationsService = getApplicationsService;
     }
@@ -29,7 +29,20 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> ApplicationDashboard()
     {
-        var model = await _getApplicationsService.GetAllApplicationsDashboardView();
+        //var dashboardFilter = get value from session.
+        var model = new AppDashboardViewModel();
+        model.ApplicationStatuses = await _getApplicationsService.GetAllApplicationStatusesAsync();
+        model.Applications = await _getApplicationsService.GetPagedApplications(new DashboardFilter());
         return View("ApplicationDashboard", model);
+    }
+
+    [HttpPost]
+    public IActionResult SearchBy(AppDashboardViewModel appDashboard)
+    {
+        if(appDashboard.SearchBy.Length < 3)
+        {
+            ModelState.AddModelError(nameof(appDashboard.SearchBy), "Your search must have 3 or more characters");
+        }
+        return RedirectToAction(nameof(ApplicationDashboard));
     }
 }

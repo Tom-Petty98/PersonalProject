@@ -22,6 +22,7 @@ public static class ServiceExtensions
         });
 
         services.AddTransient<IGetApplicationsProvider, GetApplicationsProvider>();
+        services.AddTransient<IGetAppDashboardProvider, GetAppDashboardProvider>();
         services.AddTransient<IUpdateApplicationsProvider, UpdateApplicationsProvider>();
         services.AddTransient<IGetInstallersProvider, GetInstallersProvider>();
         services.AddTransient<IUpdateInstallersProvider, UpdateInstallersProvider>();

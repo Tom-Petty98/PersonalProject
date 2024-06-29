@@ -66,8 +66,13 @@ public class GetApplicationsService : BaseRequestsClient<GetApplicationsService>
         return responseObject ?? new List<ApplicationDashboard>();
     }
 
-    public Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter)
+    public async Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetAllApplicationsDashboardView));
+        var target = "Applications/GetPagedApplications";
+
+        var responseObject = await GetAsync<DashboardFilter, PagedResult<ApplicationDashboard>>(httpClient, target, dashboardFilter, null, null);
+        return responseObject ?? new PagedResult<ApplicationDashboard>();
     }
 }
