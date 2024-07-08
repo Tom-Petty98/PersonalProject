@@ -68,6 +68,22 @@ public abstract class BaseRequestsClient<ILogCategory>
         return responseObject;
     }
 
+    /// <summary> Performs HTTP GET request with request body</summary>
+    /// <typeparam name="TResponse">The type of object to deserialize from the response and return.</typeparam>
+    /// <param name="httpClient">The HttpClient.</param>
+    /// <param name="target">The URL resource path.</param>
+    /// <param name="requestBody">The request body</param>
+    /// <param name="auditLogParams">Optional audit logging parameters</param>
+    /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
+    /// <returns>A deserialized object</returns>
+    public async Task<TResponse?> GetAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    {
+        var request = BuildRequestWithContent(HttpMethod.Get, target, requestBody);
+        var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
+
+        return responseObject;
+    }
+
     /// <summary> Performs HTTP POST request without request body</summary>
     /// <typeparam name="TResponse">The type of object to deserialize from the response and return.</typeparam>
     /// <param name="httpClient">The HttpClient.</param>
@@ -81,7 +97,7 @@ public abstract class BaseRequestsClient<ILogCategory>
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
 
         return responseObject;
-    }
+    } 
 
     /// <summary> Performs HTTP POST request with request body</summary>
     /// <typeparam name="TResponse">The type of object to deserialize from the response and return.</typeparam>
@@ -91,7 +107,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> PostAsync<TResponse, TRequest>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> PostAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Post, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -107,7 +123,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> PutAsync<TResponse, TRequest>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> PutAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Put, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -123,7 +139,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> DeleteAsync<TResponse, TRequest>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> DeleteAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Delete, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);

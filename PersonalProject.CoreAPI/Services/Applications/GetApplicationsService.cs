@@ -16,10 +16,12 @@ public interface IGetApplicationsService
 public class GetApplicationsService : IGetApplicationsService
 {
     private readonly IGetApplicationsProvider _getApplicationsProvider;
+    private readonly IGetAppDashboardProvider _getAppDashboardProvider;
 
-    public GetApplicationsService(IGetApplicationsProvider applicationsProvider)
+    public GetApplicationsService(IGetApplicationsProvider applicationsProvider, IGetAppDashboardProvider getAppDashboardProvider)
     {
         _getApplicationsProvider = applicationsProvider;
+        _getAppDashboardProvider = getAppDashboardProvider;
     }
 
     public async Task<IEnumerable<ApplicationDashboard>> GetAllApplicationsDashboardView()
@@ -36,8 +38,7 @@ public class GetApplicationsService : IGetApplicationsService
     public async Task<Application?> GetApplicationByReferenceNumberAsync(string refNumber)
      => await _getApplicationsProvider.GetApplicationByReferenceNumberAsync(refNumber);
 
-    public Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<PagedResult<ApplicationDashboard>> GetPagedApplications(DashboardFilter dashboardFilter)
+        => await _getAppDashboardProvider.GetPagedApplications(dashboardFilter);
+    
 }

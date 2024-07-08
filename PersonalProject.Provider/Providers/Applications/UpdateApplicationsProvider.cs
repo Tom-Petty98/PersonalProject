@@ -81,7 +81,8 @@ public class UpdateApplicationsProvider : IUpdateApplicationsProvider
 
     private async Task UpsertStatusHistory(Application application)
     {
-        var currentStatusHistory = await _context.ApplicationStatusHistories.FirstOrDefaultAsync(x => x.EndDate == null);
+        var currentStatusHistory = await _context.ApplicationStatusHistories
+            .FirstOrDefaultAsync(x => x.ApplicationId == application.Id && x.EndDate == null);
 
         if (currentStatusHistory != null)
         {

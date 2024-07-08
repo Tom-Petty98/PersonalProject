@@ -24,42 +24,4 @@ public static class Pagination
 
         return result;
     }
-
-    private static IQueryable<ApplicationDashboard> ApplicationSearchBy(string searchBy, IQueryable<ApplicationDashboard> applications)
-    {
-        if(!string.IsNullOrEmpty(searchBy) && searchBy.Length >= 3)
-        {
-            applications = applications.Where(c => (!string.IsNullOrEmpty(c.Postcode) && c.Postcode.Contains(searchBy))
-               || (!string.IsNullOrEmpty(c.RefNumber)) && c.RefNumber.Contains(searchBy));
-        }
-
-        return applications;
-    }
-
-    public static IOrderedQueryable<ApplicationDashboard> ApplicationsSortBy(string sortBy, bool orderByDescending,
-        IQueryable<ApplicationDashboard> applications)
-    {
-        IOrderedQueryable<ApplicationDashboard> sortedApplications = sortBy switch
-        {
-            "PostCode" => orderByDescending
-            ? applications.OrderByDescending(x => x.Postcode)
-            : applications.OrderBy(x => x.Postcode),
-
-            "RefNumber" => orderByDescending
-            ? applications.OrderByDescending(x => x.RefNumber)
-            : applications.OrderBy(x => x.RefNumber),
-
-            "StatusDescription" => orderByDescending
-            ? applications.OrderByDescending(x => x.StatusDescription)
-            : applications.OrderBy(x => x.StatusDescription),
-
-            "FlaggedForAudit" => orderByDescending
-            ? applications.OrderByDescending(x => x.FlaggedForAudit)
-            : applications.OrderBy(x => x.FlaggedForAudit),
-
-            _ => applications.OrderByDescending(x => x.RefNumber)
-        };
-
-        return sortedApplications;
-    }
 }

@@ -1,53 +1,126 @@
 ﻿@using PersonalProject.InternalPortal.Services.Helpers
-@model IEnumerable<PersonalProject.Domain.Entities.ApplicationDashboard>
+@using PersonalProject.InternalPortal.Models.Home
+@model AppDashboardViewModel
 @{
     ViewData["Title"] = "Application Dashboard";
 }
 
-<h1>Applications</h1>
+<h1 class="text-center">Applications Dashboard</h1>
+<hr />
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <h3>Search</h3>
 
-<div>
-    <a href="/Home/Index">Installer Dashboard</a>
+                <form id="search-form" method="post" asp-action="SearchBy" novalidate>
+                    <div class="input-group mb-3">
+                        <span asp-validation-for="SearchBy" class="text-danger"></span>
+                        <input type="text" asp-for="SearchBy" class="form-control" placeholder="GID or postcode"
+                               aria-label="GID or postcode" aria-describedby="search-input">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                    </div>
+                </form>
+                
+                <hr />
+
+                <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+                    Filter by status
+                </h4>
+                <br />
+
+                <form id="apply-filters-form" method="post"  novalidate>
+                    <div class="list-group">
+
+                        @foreach (var status in Model.ApplicationStatuses!)
+                        {
+                            <label class="list-group-item">  
+                                <input class="form-check-input" type="checkbox" id="StatusCode-@status.Id"
+                                       name="StatusCodesToFilterBy" value="@status.Code.ToString()">
+                                @status.Description
+                            </label>
+                        }
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-secondary btn-sm" asp-action="ClearFilters">Clear filters</button>
+                    <button type="submit" class="btn btn-primary btn-sm" asp-action="ApplyFilters">Apply Filters</button>
+                </form>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+                <h2>Applications</h2>
+
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <a href="/Home/Index">Installer Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-sm table-sortable">
+                    <thead class="p-3 mb-2 bg-primary text-dark bg-opacity-25">
+                        <tr>
+                            <form id="sort-by-form" method="post" novalidate>
+                            <th aria-sort=@(Model.SortByColumn == "RefNumber" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="ref-number-button" type="submit" asp-action="SortBy" asp-route-column="RefNumber">Ref Number <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "Postcode" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="postcode-button" type="submit" asp-action="SortBy" asp-route-column="Postcode">Postcode <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "StatusDescription" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="status-button" type="submit" asp-action="SortBy" asp-route-column="StatusDescription">Status <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "FlaggedForAudit" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="flagged-for-audit-button" type="submit" asp-action="SortBy" asp-route-column="FlaggedForAudit">Flagged <br /> for audit&nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "ReviewRecommendation" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="review-recommendation-button" type="submit" asp-action="SortBy" asp-route-column="ReviewRecommendation">Review <br /> recommendation&nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "LastStatusChangeDate" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="last-changed-button" type="submit" asp-action="SortBy" asp-route-column="LastStatusChangeDate">Last Status <br /> Change&nbsp;</button>
+                            </th>
+                            </form>                          
+                        </tr>
+                    </thead>
+                    @if (Model.Applications.RowCount > 0)
+                    {
+                        <tbody>
+
+                            @foreach (var item in Model.Applications.Results)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="/Application/EditStatus?refNumber=@item.RefNumber">@item.RefNumber</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Postcode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StatusDescription)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FlaggedForAudit)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ReviewRecommendation)
+                                    </td>
+                                    <td>
+                                        @item.LastStatusChangeDate.ToUiDateTimeFormat()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+
+                    }
+                </table>
+            </div>
+            <partial name="_Pagination" model="Model.Applications" view-data="ViewData" />
+        </main>
+    </div>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Ref Number</th>
-            <th>Postcode</th>
-            <th>Status</th>
-            <th>Flagged For Audit</th>
-            <th>Review Recommendation</th>
-            <th>Last Status Change</th>
-        </tr>
-    </thead>
-    @if (Model.Any())
-    {
-        <tbody>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <a href="/Application/EditStatus?refNumber=@item.RefNumber">@item.RefNumber</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Postcode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StatusDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FlaggedForAudit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReviewRecommendation)
-                    </td>
-                    <td>
-                        @item.LastStatusChangeDate.ToUiDateTimeFormat()
-                    </td>
-                </tr>
-            }
-        </tbody>
-    }
-</table>

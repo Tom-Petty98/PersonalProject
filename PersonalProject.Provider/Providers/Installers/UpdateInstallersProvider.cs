@@ -84,7 +84,8 @@ public class UpdateInstallersProvider : IUpdateInstallersProvider
 
     private void UpsertStatusHistory(Installer installer)
     {
-        var currentStatusHistory = _context.InstallerStatusHistories.FirstOrDefault(x => x.EndDate == null);
+        var currentStatusHistory = _context.InstallerStatusHistories
+            .FirstOrDefault(x => x.InstallerId == installer.Id && x.EndDate == null);
 
         if (currentStatusHistory != null)
         {

@@ -1,0 +1,44 @@
+﻿@if(Model.PageCount > 0)
+{
+    var currentPage = Model.CurrentPage;
+
+    <nav aria-label="...">
+        <ul class="pagination">
+
+            <li class="page-item @(currentPage == 1 ? "disabled" : null)">
+                <a id="previous-button" class="page-link" asp-action="ChangePage"
+                       asp-route-selectedPage="@(currentPage - 1)">Previous</a>
+            </li>
+            @for(int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(currentPage == i ? "active" : null)">
+                    <a id="page-num-@i" class="page-link" asp-action="ChangePage"
+                       asp-route-selectedPage="@i">@i</a>
+                </li>
+
+                if (i == 5 && Model.PageCount > 8) break;
+            }
+            @if(Model.PageCount > 8)
+            {
+                @*If page right in the middle and there are a lot of pages not currently handled*@
+                
+                
+                <li class="page-item">
+                    <a class="page-link href="#">...</a>
+                </li>
+
+                @for(int i = Model.PageCount - 2; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(currentPage == i ? "active" : null)">
+                        <a id="page-num-@i" class="page-link" asp-action="ChangePage"
+                           asp-route-selectedPage="@i">@i</a>
+                    </li>
+                }
+            }
+            <li class="page-item @(currentPage == Model.PageCount ? "disabled" : null)">
+                <a id="next-button" class="page-link" asp-action="ChangePage"
+                   asp-route-selectedPage="@(currentPage + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

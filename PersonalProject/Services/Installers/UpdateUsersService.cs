@@ -28,7 +28,8 @@ public class UpdateUsersService : BaseRequestsClient<UpdateUsersService>, IUpdat
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(AddUser));
         var target = "Users/AddUser";
 
-        return await PostAsync<int, User>(httpClient, target, user, null, null);
+        var userId = await PostAsync<User, int>(httpClient, target, user, null, null);
+        return userId;
     }
 
     public async Task<bool> UpdateUser(User user)
@@ -37,6 +38,6 @@ public class UpdateUsersService : BaseRequestsClient<UpdateUsersService>, IUpdat
         var pollyParams = PollyExtensions.BuildPollyParams(nameof(UpdateUser));
         var target = "Users/UpdateUser";
 
-        return await PostAsync<bool, User>(httpClient, target, user, null, null);
+        return await PostAsync<User, bool>(httpClient, target, user, null, null);
     }
 }
