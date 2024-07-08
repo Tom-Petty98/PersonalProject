@@ -18,7 +18,7 @@
                         <span asp-validation-for="SearchBy" class="text-danger"></span>
                         <input type="text" asp-for="SearchBy" class="form-control" placeholder="GID or postcode"
                                aria-label="GID or postcode" aria-describedby="search-input">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                     </div>
                 </form>
                 
@@ -42,8 +42,8 @@
                         }
                     </div>
                     <br />
-                    <button type="button" class="btn btn-secondary btn-sm" asp-action="ClearFilters">Clear filters</button>
-                    <button type="button" class="btn btn-primary btn-sm" asp-action="ApplyFilters">Apply Filters</button>
+                    <button type="submit" class="btn btn-secondary btn-sm" asp-action="ClearFilters">Clear filters</button>
+                    <button type="submit" class="btn btn-primary btn-sm" asp-action="ApplyFilters">Apply Filters</button>
                 </form>
             </div>
         </nav>
@@ -65,12 +65,26 @@
                 <table class="table table-striped table-sm table-sortable">
                     <thead class="p-3 mb-2 bg-primary text-dark bg-opacity-25">
                         <tr>
-                            <th>Ref Number</th>
-                            <th>Postcode</th>
-                            <th>Status</th>
-                            <th>Flagged For Audit</th>
-                            <th>Review Recommendation</th>
-                            <th>Last Status Change</th>
+                            <form id="sort-by-form" method="post" novalidate>
+                            <th aria-sort=@(Model.SortByColumn == "RefNumber" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="ref-number-button" type="submit" asp-action="SortBy" asp-route-column="RefNumber">Ref Number <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "Postcode" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="postcode-button" type="submit" asp-action="SortBy" asp-route-column="Postcode">Postcode <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "StatusDescription" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="status-button" type="submit" asp-action="SortBy" asp-route-column="StatusDescription">Status <br /> &nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "FlaggedForAudit" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="flagged-for-audit-button" type="submit" asp-action="SortBy" asp-route-column="FlaggedForAudit">Flagged <br /> for audit&nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "ReviewRecommendation" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="review-recommendation-button" type="submit" asp-action="SortBy" asp-route-column="ReviewRecommendation">Review <br /> recommendation&nbsp;</button>
+                            </th>
+                            <th aria-sort=@(Model.SortByColumn == "LastStatusChangeDate" ? Model.SortByDesc ? "descending" : "ascending" : "none")>
+                                <button id="last-changed-button" type="submit" asp-action="SortBy" asp-route-column="LastStatusChangeDate">Last Status <br /> Change&nbsp;</button>
+                            </th>
+                            </form>                          
                         </tr>
                     </thead>
                     @if (Model.Applications.RowCount > 0)
@@ -106,21 +120,7 @@
                     }
                 </table>
             </div>
-            <nav aria-label="...">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active" aria-current="page">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <partial name="_Pagination" model="Model.Applications" view-data="ViewData" />
         </main>
     </div>
 </div>

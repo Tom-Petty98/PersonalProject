@@ -17,24 +17,59 @@ body {
   margin-bottom: 60px;
 }
 
-.table-sortable th {
+[aria-sort]:first-child button{
+    right: auto;
+}
+
+[aria-sort] button, [aria-sort] button:hover {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
     cursor: pointer;
+    outline: inherit;
 }
 
-.table-sortable .th-sort-asc::after{
+[aria-sort=descending] button:before, [aria-sort=ascending] button:before {
+    content: none;
+}
+
+[aria-sort=none] button:before {
     content: "\25b4";
+    position: absolute;
+    right: -5px;
+    top: 10px;
+    font-size:12px;
 }
 
-.table-sortable .th-sort-desc::after {
+[aria-sort=none] button:after {
     content: "\25be";
+    position: absolute;
+    right: -5px;
+    top: -1px;
+    font-size: 12px;
 }
 
-.table-sortable .th-sort-asc::after,
-.table-sortable .th-sort-desc::after {
-    margin-left: 5px;
+[aria-sort=descending] button:before {
+    content: "\25b4";
+    position: absolute;
+    right: -5px;
+    top: 10px;
+    font-size: 12px;
 }
 
-.table-sortable .th-sort-asc,
-.table-sortable .th-sort-desc {
-    background: rgba(0, 0, 0, 0.1);
+[aria-sort=ascending] button:after {
+    content: "\25be";
+    position: absolute;
+    right: -5px;
+    top: -1px;
+    font-size: 12px;
+}
+
+[aria-sort] button:focus {
+    background-color: #000000;
+    color: #0b0c0c;
+    box-shadow: 0 -3px #ffdd00, 0 4px #0b0c0c;
+    outline: none;
 }
