@@ -5,18 +5,23 @@ namespace PersonalProject.ConsentPortal.Services;
 public interface IConsentService
 {
     Task<TokenVerificationResult> VerifyToken(string token);
-    //Task<ConsentDetails> GetConsentDetails(int appId);
-    Task<bool> RegisterCosent(int appId);
+    Task<ConsentDetails> GetConsentDetails(string appRef);
+    Task<bool> RegisterCosent(string appRef);
 }
 
 public class ConsentService : IConsentService
 {
-    public Task<bool> RegisterCosent(int appId)
+    public Task<ConsentDetails> GetConsentDetails(string appRef)
     {
         throw new NotImplementedException();
     }
 
     public Task<TokenVerificationResult> VerifyToken(string token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> RegisterCosent(string appRef)
     {
         throw new NotImplementedException();
     }

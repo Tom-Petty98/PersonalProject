@@ -34,11 +34,19 @@ public class ConsentController : ControllerBase
         return Ok(_jwtTokenService.VerifyToken(token));
     }
 
-    //[HttpGet]
-    //[Route("GetConsentDetails/{appId}")]
-    //[ProducesResponseType(typeof(ConsentDetails), 200)]
-    //public async Task<IActionResult> GetConsentDetails(int appId)
-    //{
-    //    return Ok(_consentService.);
-    //}
+    [HttpGet]
+    [Route("GetConsentDetails/{appRefNumber}")]
+    [ProducesResponseType(typeof(ConsentDetails), 200)]
+    public async Task<IActionResult> GetConsentDetails(string appRefNumber)
+    {
+        return Ok(await _consentService.GetConsentDetails(appRefNumber));
+    }
+
+    [HttpPost]
+    [Route("RegisterConsent/{refNumber}")]
+    public async Task<IActionResult> RegisterConsent(string refNumber)
+    {
+        await _consentService.RegisterConsent(refNumber);
+        return Ok();
+    }
 }

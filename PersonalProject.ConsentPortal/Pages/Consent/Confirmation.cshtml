@@ -1,0 +1,16 @@
+﻿@page "/consent-recieved"
+@model PersonalProject.ConsentPortal.Pages.Consent.ConfirmationModel
+@{
+    ViewData["Title"] = "Consent Recieved";
+}
+
+
+<div class="text-center">
+    <div class="alert alert-success" role="alert">
+        Consent Recieved
+    </div>
+    <p>
+        Thank you for giving your consent. An email has been sent to the installer @Model.ConsentDetails.InstallerName to let
+        them know that your consent for the installation at your property has been recieved.
+    </p>
+</div>

@@ -32,11 +32,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentsApi", "DocumentsAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.DocumentsAPI.IntergrationTests", "Tests\DocumentsAPI\IntergrationTests\Tests.DocumentsAPI.IntergrationTests.csproj", "{B834B255-D6CB-43BD-A924-2CEBE91BB1E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalProject.ConsentPortal", "PersonalProject.ConsentPortal\PersonalProject.ConsentPortal.csproj", "{73DC4F4D-7915-4526-8A70-F320C379ED9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalProject.ConsentPortal", "PersonalProject.ConsentPortal\PersonalProject.ConsentPortal.csproj", "{73DC4F4D-7915-4526-8A70-F320C379ED9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConsentPortal", "ConsentPortal", "{D5CDD03D-3FCD-42F7-8AC5-25502F707240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.ConsentPortal.UnitTests", "Tests.ConsentPortal.UnitTests\Tests.ConsentPortal.UnitTests.csproj", "{170484FB-C104-42CF-80B1-3C6E70E45E1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.ConsentPortal.UnitTests", "Tests.ConsentPortal.UnitTests\Tests.ConsentPortal.UnitTests.csproj", "{170484FB-C104-42CF-80B1-3C6E70E45E1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

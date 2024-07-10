@@ -8,7 +8,7 @@ namespace PersonalProject.CoreAPI.Services.Shared;
 
 public interface IJwtTokenService
 {
-    string GenerateToken(int appDetailId, DateTime expiryDate);
+    string GenerateToken(string entityRef, DateTime expiryDate);
     TokenVerificationResult VerifyToken(string token);
 }
 
@@ -21,7 +21,7 @@ public class JwtTokenService : IJwtTokenService
         _config = config;
     }
 
-    public string GenerateToken(int appDetailId, DateTime expiryDate)
+    public string GenerateToken(string entityRefNum, DateTime expiryDate)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config.EmailTokenSecret));
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -29,7 +29,7 @@ public class JwtTokenService : IJwtTokenService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim("EntityId", appDetailId.ToString()), 
+                new Claim("EntityRef", entityRefNum), 
                 new Claim("ExpiryDate", expiryDate.ToString()),
             }),
             Expires = expiryDate,
@@ -53,7 +53,7 @@ public class JwtTokenService : IJwtTokenService
         if (securityToken == null) return validationResult;
 
         validationResult.TokenAccepted = true;
-        validationResult.EntityId = int.Parse(securityToken.Claims.First(claim => claim.Type == "EntityId").Value);
+        validationResult.EntityRef = securityToken.Claims.First(claim => claim.Type == "EntityRef").Value;
         validationResult.ExpiryDate = DateTime.Parse(securityToken.Claims.First(claim => claim.Type == "ExpiryDate").Value);
 
         return validationResult;

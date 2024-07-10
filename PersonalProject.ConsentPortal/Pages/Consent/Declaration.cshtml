@@ -1,0 +1,39 @@
+﻿@page "/consent-declaration"
+@model PersonalProject.ConsentPortal.Pages.Consent.DeclarationModel
+@{
+    ViewData["Title"] = "Consent Declaration";
+}
+
+<h1>Declaration</h1>
+
+<form method="post" novalidate>
+    <p>Please confirm that the installation at your property meets the following scheme requirements:</p>
+    <span asp-validation-for="Requirement1" class="text-danger"></span>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" asp-for="@Model.Requirement1" id="requirment1-checkbox">
+        <label class="form-check-label" for="requirment1-checkbox">
+            The installation meets scheme requirment 1.
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" asp-for="@Model.Requirement2" id="requirment2-checkbox">
+        <label class="form-check-label" for="requirment2-checkbox">
+            The installation meets scheme requirment 2.
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" asp-for="@Model.Requirement3" id="requirment3-checkbox">
+        <label class="form-check-label" for="requirment3-checkbox">
+            The installation meets scheme requirment 3.
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" asp-for="@Model.Requirement4" id="requirment4-checkbox">
+        <label class="form-check-label" for="requirment4-checkbox">
+            The installation meets scheme requirment 4.
+        </label>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Confirm declarations" class="btn btn-primary" />
+    </div>
+</form>

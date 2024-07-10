@@ -82,6 +82,15 @@
 
             <p><strong>Last edited by: </strong>@editedBy</p>
             <p><strong>Last edited date: </strong>@editedDate</p>
+
+            @if (Model.ApplicationDetail.ConsentRecieved == null)
+            {
+                <form id="issue-consent-form" method="post" asp-action="IssueConsent" novalidate>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-secondary" type="submit" id="issue-consent">Send Consent Email</button>
+                    </div>
+                </form>
+            }
         }
         <p><strong>Submitted Date: </strong>@Model.ApplicationDetail.SubmittedDate</p>
         <p><strong>Current Contact: </strong>@Model.CurrentContact.Email</p>

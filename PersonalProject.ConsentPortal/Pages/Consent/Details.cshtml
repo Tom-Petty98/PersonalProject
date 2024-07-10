@@ -1,0 +1,40 @@
+﻿@page "/installation-details"
+@model PersonalProject.ConsentPortal.Pages.Consent.DetailsModel
+@{
+    ViewData["Title"] = "Installation Details";
+}
+
+<h1>Installation Details</h1>
+
+The installer {installerName} has made an application for an installation at: \n\n" +
+            $"{installationAddress!.AddressLine1} \n\n {installationAddress.Postcode} \n\n" +
+            $"In order to progress the above installation at this address your consent is required please click the link below to give consent. \n\n" +
+            $"{consentTokenUrl}
+
+<p>The installer @Model.ConsentDetails.InstallerName has made an application for an installation at:</p>
+<br />
+<p>@Model.ConsentDetails.AddressLine1</p>
+<p>@Model.ConsentDetails.Postcode</p>
+<br />
+<p>Please confirm the following to proceed:</p>
+<form method="post" novalidate>
+    <div class="form-check">
+        <span asp-validation-for="InstallerConfirmed" class="text-danger"></span>
+        <input class="form-check-input" type="checkbox" asp-for="@Model.InstallerConfirmed" id="installer-confirm-checkbox">
+        <label class="form-check-label" for="installer-confirm-checkbox">
+            The installation will be installed at the address listed above.
+        </label>
+    </div>
+    <div class="form-check">
+        <span asp-validation-for="PropertyDetailsConfirmed" class="text-danger"></span>
+        <input class="form-check-input" type="checkbox" asp-for="@Model.PropertyDetailsConfirmed" id="property-details-checkbox">
+        <label class="form-check-label" for="property-details-checkbox">
+            The installation at my property will be installed by @Model.ConsentDetails.InstallerName 
+            and is a @Model.ConsentDetails.TechTypeDescription installation.
+        </label>
+    </div>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Confirm details" class="btn btn-primary" />
+    </div>
+</form>
