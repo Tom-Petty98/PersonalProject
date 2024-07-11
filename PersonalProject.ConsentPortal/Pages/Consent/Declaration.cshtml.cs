@@ -7,6 +7,7 @@ using PersonalProject.Domain.Request;
 
 namespace PersonalProject.ConsentPortal.Pages.Consent;
 
+[ServiceFilter(typeof(SessionTokenAuthorizeAttribute))]
 public class DeclarationModel : PageModel
 {
     private readonly IConsentService _consentService;
@@ -31,7 +32,7 @@ public class DeclarationModel : PageModel
         return Page();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
         if (!Requirement1 || !Requirement2 || !Requirement3 || !Requirement4)
         {
@@ -40,7 +41,7 @@ public class DeclarationModel : PageModel
         }
 
         var consentDetails = HttpContext.Session.GetOrDefault<ConsentDetails>(Constants.ConsentDetailsSessionKey)!;
-        //await _consentService.RegisterCosent(consentDetails.AppRefNumber);
+        await _consentService.RegisterConsent(consentDetails.AppRefNumber);
 
         return RedirectToPage("./Confirmation");
     }

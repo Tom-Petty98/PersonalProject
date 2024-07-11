@@ -6,6 +6,7 @@ using PersonalProject.Domain.Request;
 
 namespace PersonalProject.ConsentPortal.Pages.Consent;
 
+[ServiceFilter(typeof(SessionTokenAuthorizeAttribute))]
 public class ConfirmationModel : PageModel
 {
     public ConsentDetails ConsentDetails { get; set; } = null!;

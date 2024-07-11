@@ -82,12 +82,14 @@
 
             <p><strong>Last edited by: </strong>@editedBy</p>
             <p><strong>Last edited date: </strong>@editedDate</p>
+            <hr />
 
             @if (Model.ApplicationDetail.ConsentRecieved == null)
             {
-                <form id="issue-consent-form" method="post" asp-action="IssueConsent" novalidate>
+                <form id="issue-consent-form" method="post" asp-action="SendConsentEmail" novalidate>
+                    <input asp-for="RefNumber" type="hidden">
                     <div class="input-group mb-3">
-                        <button class="btn btn-outline-secondary" type="submit" id="issue-consent">Send Consent Email</button>
+                        <button class="btn btn-primary" type="submit" id="issue-consent">Send Consent Email</button>
                     </div>
                 </form>
             }

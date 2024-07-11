@@ -17,7 +17,7 @@ public class SessionAuthorizationService : ISessionAuthorizationService
     private readonly string _consentTokenSecret;
 
     const int SessionTokenExpiryMinutes = 30;
-    const string AppIdClaimName = "EntityId";
+    const string AppRefClaimName = "EntityRef";
     const string ExpiryDateClaimName = "ExpiryDate";
 
     public SessionAuthorizationService(string consentTokenSecret)
@@ -31,7 +31,7 @@ public class SessionAuthorizationService : ISessionAuthorizationService
 
         if (sessionToken is JwtSecurityToken jwtSessionToken)
         {
-            var appIdClaim = jwtSessionToken.Claims.FirstOrDefault(claim => claim.Type == AppIdClaimName);
+            var appIdClaim = jwtSessionToken.Claims.FirstOrDefault(claim => claim.Type == AppRefClaimName);
 
             if (appIdClaim != null) 
             { 
@@ -42,23 +42,23 @@ public class SessionAuthorizationService : ISessionAuthorizationService
         return string.Empty;
     }  
 
-    public string GenerateSessionToken(string appId)
+    public string GenerateSessionToken(string appRefNumber)
     {
         var tokenExpiryDateTime = DateTime.UtcNow.AddMinutes(SessionTokenExpiryMinutes);
 
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_consentTokenSecret));
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenDescription = new SecurityTokenDescriptor
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(AppIdClaimName, appId.ToString()),
+                new Claim(AppRefClaimName, appRefNumber),
                 new Claim(ExpiryDateClaimName, tokenExpiryDateTime.ToString()),
             }),
             Expires = tokenExpiryDateTime,
             SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
         };
-        var token = tokenHandler.CreateToken(tokenDescription);
+        var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
 

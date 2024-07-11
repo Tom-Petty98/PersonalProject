@@ -1,4 +1,7 @@
-﻿using PersonalProject.Domain.Request;
+﻿using PersonalProject.ConsentPortal.Services.Extensions;
+using PersonalProject.Domain.Request;
+using Polly.Registry;
+using System.Security.Cryptography;
 
 namespace PersonalProject.ConsentPortal.Services;
 
@@ -6,23 +9,47 @@ public interface IConsentService
 {
     Task<TokenVerificationResult> VerifyToken(string token);
     Task<ConsentDetails> GetConsentDetails(string appRef);
-    Task<bool> RegisterCosent(string appRef);
+    Task<bool> RegisterConsent(string appRef);
 }
 
-public class ConsentService : IConsentService
+public class ConsentService : BaseRequestsClient<ConsentService>, IConsentService
 {
-    public Task<ConsentDetails> GetConsentDetails(string appRef)
+    private readonly IHttpClientFactory _httpClientFactory;
+    private const string _clientName = "CoreAPI";
+    public ConsentService(IHttpClientFactory httpClientFactory, ILogger<ConsentService> logger, IPolicyRegistry<string> polySettings)
+        : base(polySettings, logger)
     {
-        throw new NotImplementedException();
+        _httpClientFactory = httpClientFactory;
     }
 
-    public Task<TokenVerificationResult> VerifyToken(string token)
+    private HttpClient BuildClient() => _httpClientFactory.CreateClient(_clientName);
+
+    public async Task<ConsentDetails> GetConsentDetails(string appRef)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(GetConsentDetails));
+        var target = $"Consent/GetConsentDetails/{appRef}";
+
+        var responseObject = await GetAsync<ConsentDetails>(httpClient, target, null, null);
+        return responseObject ?? new ConsentDetails();
     }
 
-    public Task<bool> RegisterCosent(string appRef)
+    public async Task<TokenVerificationResult> VerifyToken(string token)
     {
-        throw new NotImplementedException();
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(VerifyToken));
+        var target = $"Consent/VerifyToken/{token}";
+
+        var responseObject = await GetAsync<TokenVerificationResult>(httpClient, target, null, null);
+        return responseObject ?? new TokenVerificationResult();
+    }
+
+    public async Task<bool> RegisterConsent(string appRef)
+    {
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(RegisterConsent));
+        var target = $"Consent/RegisterConsent/{appRef}";
+
+        return await PostAsync<bool>(httpClient, target, null, null);
     }
 }

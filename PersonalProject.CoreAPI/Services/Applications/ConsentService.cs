@@ -40,13 +40,14 @@ public class ConsentService : IConsentService
     public async Task<ConsentDetails> GetConsentDetails(string appRefNumber)
     {
         var app = await _getApplicationsProvider.GetApplicationByReferenceNumberAsync(appRefNumber);
-        var installerName = await _getInstallerProvider.GetInstallerNameById(app.Id);
+        var installerName = await _getInstallerProvider.GetInstallerNameById(app!.InstallerId);
         var techTypes = await _getApplicationsProvider.GetTechTypesAsync();
         var techTypeDescription = techTypes.First(x => x.Id == app.ApplicationDetail.TechTypeId).Description;
 
         return new ConsentDetails
         {
             AppRefNumber = appRefNumber,
+            HasConsented = app.ApplicationDetail.ConsentRecieved ?? false,
             TechTypeDescription = techTypeDescription,
             InstallerName = installerName,
             AddressLine1 = app.ApplicationDetail.InstallationAddress!.AddressLine1,

@@ -2,6 +2,7 @@
 
 public class ConsentDetails
 {
+    public bool HasConsented { get; set; }
     public string AppRefNumber { get; set; } = null!;
     public string InstallerName { get; set; } = null!;
     public string TechTypeDescription { get; set; } = null!;
