@@ -70,7 +70,8 @@ public class JwtTokenService : IJwtTokenService
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = securityKey,
                 ValidateAudience = false,
-                ValidateIssuer = false
+                ValidateIssuer = false,
+                ValidateLifetime = false,
             }, out SecurityToken validatedToken);
         }
         catch

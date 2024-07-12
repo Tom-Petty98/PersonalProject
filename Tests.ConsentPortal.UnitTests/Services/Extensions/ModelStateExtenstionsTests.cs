@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PersonalProject.ConsentPortal.Services.Extensions;
 
-namespace Tests.ConsentPortal.UnitTests.Services;
+namespace Tests.ConsentPortal.UnitTests.Services.Extensions;
 
 [TestFixture]
 public class ModelStateExtenstionsTests
@@ -15,10 +15,10 @@ public class ModelStateExtenstionsTests
         modelState.AddModelError("TestError", "Something broke");
 
         //Act
-        var isValid = modelState.HasError("TestError");
+        var hasError = modelState.HasError("TestError");
 
         //Assert
-        isValid.Should().BeTrue();
+        hasError.Should().BeTrue();
     }
 
     [Test]
@@ -32,9 +32,9 @@ public class ModelStateExtenstionsTests
 
 
         //Act
-        var isValid = modelState.HasError("TestError4");
+        var hasError = modelState.HasError("TestError4");
 
         //Assert
-        isValid.Should().BeFalse();
+        hasError.Should().BeFalse();
     }
 }

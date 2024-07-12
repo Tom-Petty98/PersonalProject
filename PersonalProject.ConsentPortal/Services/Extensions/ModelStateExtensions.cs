@@ -6,7 +6,7 @@ public static class ModelStateExtensions
 {
     public static bool HasError(this ModelStateDictionary modelState, string key)
     {
-        if (modelState[key]!.Errors != null && modelState[key]!.Errors.Any())
+        if (modelState[key]?.Errors != null && modelState[key]!.Errors.Any())
         {
             return true;
         }

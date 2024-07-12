@@ -6,8 +6,9 @@ using PersonalProject.ConsentPortal.Models;
 using PersonalProject.ConsentPortal.Services;
 using PersonalProject.ConsentPortal.Services.Extensions;
 using FluentAssertions;
+using System.Text;
 
-namespace Tests.ConsentPortal.UnitTests.Services;
+namespace Tests.ConsentPortal.UnitTests.Services.Extensions;
 
 internal class SessionTokenAuthorizeAttributeTests
 {
@@ -27,26 +28,36 @@ internal class SessionTokenAuthorizeAttributeTests
         return filterContext;
     }
 
-    private SessionTokenAuthorizeAttribute GenerateSystemUnderTest() 
+    private SessionTokenAuthorizeAttribute GenerateSystemUnderTest()
         => new SessionTokenAuthorizeAttribute(_mockSessionAuthorizationService.Object, _mockHttpContextAccessor.Object);
 
     [OneTimeSetUp]
     public void Setup()
     {
         _mockSessionAuthorizationService = new();
+        _mockHttpContextAccessor = new();
         _mockSessionAuthorizationService.Setup(service => service.ValidateSessionToken(ValidToken)).Returns(true);
         _mockSessionAuthorizationService.Setup(service => service.ValidateSessionToken(InvalidToken)).Returns(false);
         _mockSessionAuthorizationService.Setup(service => service.ValidateSessionToken(string.Empty)).Returns(true);
+    }
+
+    private AuthorizationFilterContext SetupHttpContext(string token)
+    {
+        var mockSession = new Mock<ISession>();
+        byte[] dummy = Encoding.UTF8.GetBytes(token);
+        mockSession.Setup(x => x.TryGetValue(Constants.SessionAuthorizationTokenKey, out dummy!));
+        _mockHttpContextAccessor.Setup(s => s.HttpContext!.Session).Returns(mockSession.Object);
+
+        var mockHttpContext = new Mock<HttpContext>();
+        mockHttpContext.Setup(context => context.Response).Returns(new Mock<HttpResponse>().Object);
+        return GetTestFilterContext(mockHttpContext.Object);
     }
 
     [TestCase(ValidToken)]
     public void OnAuthorization_Accepts_Valid_Token(string token)
     {
         //Arrange
-        var httpContext = new DefaultHttpContext();
-        httpContext.Session.SetString(Constants.SessionAuthorizationTokenKey, token);
-
-        var filterContext = GetTestFilterContext(httpContext);
+        var filterContext = SetupHttpContext(token);
         var systemUnderTest = GenerateSystemUnderTest();
 
         //Act
@@ -61,10 +72,8 @@ internal class SessionTokenAuthorizeAttributeTests
     public void OnAuthorization_Rejects_Invalid_Token(string token)
     {
         //Arrange
-        var httpContext = new DefaultHttpContext();
-        httpContext.Session.SetString(Constants.SessionAuthorizationTokenKey, token);
-
-        var filterContext = GetTestFilterContext(httpContext);
+        //Arrange
+        var filterContext = SetupHttpContext(token);
         var systemUnderTest = GenerateSystemUnderTest();
 
         //Act

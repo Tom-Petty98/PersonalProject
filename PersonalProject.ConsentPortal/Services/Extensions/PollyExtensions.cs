@@ -6,7 +6,7 @@ namespace PersonalProject.ConsentPortal.Services.Extensions;
 
 public static class PollyExtensions
 {
-    public static Context BuildPollyContext(this PollyParemters paremters, ILogger logger)
+    public static Context BuildPollyContext(this PollyParameters paremters, ILogger logger)
     {
         var context = new Context()
         {
@@ -29,9 +29,9 @@ public static class PollyExtensions
         return context;
     }
 
-    public static PollyParemters BuildPollyParams(string source, string? policyKey = null)
+    public static PollyParameters BuildPollyParams(string source, string? policyKey = null)
     {
-        return new PollyParemters
+        return new PollyParameters
         {
             PolicyKey = policyKey ?? PollyContextKeys.RetryHttp500,
             Source = source
@@ -74,7 +74,7 @@ public static class PollyExtensions
 
     public static bool TryGetLogger(this Context context, out ILogger logger)
     {
-        if (context.TryGetValue("Logger", out var loggerObject) && loggerObject is ILogger theLogger)
+        if (context.TryGetValue(PollyContextKeys.Logger, out var loggerObject) && loggerObject is ILogger theLogger)
         {
             logger = theLogger;
             return true;
