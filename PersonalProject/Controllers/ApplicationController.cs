@@ -136,6 +136,14 @@ public class ApplicationController : Controller
         return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber });
     }
 
+    [HttpPost]
+    public async Task<IActionResult> SendConsentEmail(EditApplicationStatusViewModel model)
+    {       
+        await _updateApplicationsService.SendConsentEmail(model.RefNumber);
+        
+        return RedirectToAction(nameof(EditStatus), new { refNumber = model.RefNumber });
+    }
+
     [HttpGet]
     public async Task<IActionResult> EditDetails(string refNumber)
     {

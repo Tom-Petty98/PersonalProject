@@ -1,6 +1,6 @@
 ﻿namespace PersonalProject.Domain.Request;
 
-public class PollyParemters
+public class PollyParameters
 {
     /// <summary>
     /// The policy key for a policy already registered
@@ -20,9 +20,9 @@ public class PollyParemters
 
 public static class PollyContextKeys
 {
-    public const string RetryCount = "retryCount";
-    public const string Source = "source";
-    public const string Logger = "logger";
+    public const string RetryCount = "RetryCount";
+    public const string Source = "Source";
+    public const string Logger = "Logger";
     public const string RetryHttp500 = "RetryHttp500";
 }
 

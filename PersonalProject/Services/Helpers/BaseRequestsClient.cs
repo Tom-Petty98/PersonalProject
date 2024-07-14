@@ -60,7 +60,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> GetAsync<TResponse>(HttpClient httpClient, string target, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> GetAsync<TResponse>(HttpClient httpClient, string target, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, target);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -76,7 +76,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> GetAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> GetAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Get, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -91,7 +91,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> PostAsync<TResponse>(HttpClient httpClient, string target, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> PostAsync<TResponse>(HttpClient httpClient, string target, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, target);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -107,7 +107,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> PostAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> PostAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Post, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -123,7 +123,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> PutAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> PutAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Put, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -139,7 +139,7 @@ public abstract class BaseRequestsClient<ILogCategory>
     /// <param name="auditLogParams">Optional audit logging parameters</param>
     /// <param name="pollyParams">Optinal key for executing against a Polly policy.</param>
     /// <returns>A deserialized object</returns>
-    public async Task<TResponse?> DeleteAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParemters? pollyParams = null)
+    public async Task<TResponse?> DeleteAsync<TRequest, TResponse>(HttpClient httpClient, string target, TRequest? requestBody, AuditLogParameters? auditLogParams = null, PollyParameters? pollyParams = null)
     {
         var request = BuildRequestWithContent(HttpMethod.Delete, target, requestBody);
         var responseObject = await PerformSendAsync<TResponse>(httpClient, request, auditLogParams, pollyParams);
@@ -147,7 +147,7 @@ public abstract class BaseRequestsClient<ILogCategory>
         return responseObject;
     }
 
-    public async Task<HttpResponseMessage> ExecuteClientTaskWithPolicyAsync(PollyParemters policyParams, Task<HttpResponseMessage> httpClientTask)
+    public async Task<HttpResponseMessage> ExecuteClientTaskWithPolicyAsync(PollyParameters policyParams, Task<HttpResponseMessage> httpClientTask)
     {
         var context = policyParams.BuildPollyContext(_logger);
 
@@ -157,7 +157,7 @@ public abstract class BaseRequestsClient<ILogCategory>
         }
         else
         {
-            throw new KeyNotFoundException($"Failed to find polly policy {policyParams.PolicyKey} for endpoint {context["source"]}");
+            throw new KeyNotFoundException($"Failed to find polly policy {policyParams.PolicyKey} for endpoint {context[PollyContextKeys.Source]}");
         }
     }
 
@@ -196,7 +196,7 @@ public abstract class BaseRequestsClient<ILogCategory>
         return new (httpMethod, target) { Content = content };
     }
 
-    private async Task<TResponse?> PerformSendAsync<TResponse>(HttpClient httpClient, HttpRequestMessage request, AuditLogParameters? auditLogParams, PollyParemters? pollyParams = null)
+    private async Task<TResponse?> PerformSendAsync<TResponse>(HttpClient httpClient, HttpRequestMessage request, AuditLogParameters? auditLogParams, PollyParameters? pollyParams = null)
     {
         TResponse? responseObject = default;
         HttpResponseMessage response;

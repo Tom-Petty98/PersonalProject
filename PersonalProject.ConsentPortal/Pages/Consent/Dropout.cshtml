@@ -1,0 +1,14 @@
+﻿@page 
+@model PersonalProject.ConsentPortal.Pages.Consent.DropoutModel
+@{
+    ViewData["Title"] = Model.Heading;
+}
+
+<div class="text-center">
+    <div class="alert alert-warning" role="alert">
+        @Model.Heading
+    </div>
+    <p>
+        @Model.BodyContent
+    </p>
+</div>

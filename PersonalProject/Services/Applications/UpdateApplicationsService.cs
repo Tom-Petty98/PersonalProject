@@ -7,10 +7,9 @@ namespace PersonalProject.InternalPortal.Services.Implementation;
 public interface IUpdateApplicationsService
 {
     Task<Application> AddApplication(Application application);
-
     Task<bool> UpdateApplication(Application application);
-
     Task<bool> UpdateApplicationDetail(ApplicationDetail applicationDetail);
+    Task<bool> SendConsentEmail(string refNumber);
 }
 
 public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsService>, IUpdateApplicationsService
@@ -51,5 +50,14 @@ public class UpdateApplicationsService : BaseRequestsClient<UpdateApplicationsSe
         var target = "Applications/UpdateApplicationDetail";
 
         return await PostAsync<ApplicationDetail, bool>(httpClient, target, applicationDetail, null, null);
+    }
+
+    public async Task<bool> SendConsentEmail(string refNumber)
+    {
+        var httpClient = BuildClient();
+        var pollyParams = PollyExtensions.BuildPollyParams(nameof(SendConsentEmail));
+        var target = $"Consent/SendConsentEmail/{refNumber}";
+
+        return await PostAsync<bool>(httpClient, target, null, null);
     }
 }
