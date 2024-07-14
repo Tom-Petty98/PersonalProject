@@ -16,7 +16,7 @@ public class FakeHttpSession : ISession
 
     public void Clear()
     {
-        throw new NotImplementedException();
+        _sessionValues.Clear();
     }
 
     public Task CommitAsync(CancellationToken cancellationToken = default)

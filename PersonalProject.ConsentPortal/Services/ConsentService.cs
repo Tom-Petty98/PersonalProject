@@ -1,7 +1,6 @@
 ﻿using PersonalProject.ConsentPortal.Services.Extensions;
 using PersonalProject.Domain.Request;
 using Polly.Registry;
-using System.Security.Cryptography;
 
 namespace PersonalProject.ConsentPortal.Services;
 

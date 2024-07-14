@@ -8,9 +8,9 @@ public class DropoutModel : PageModel
 {
     private Dictionary<DropoutEnum, string> _dropoutHeading = new Dictionary<DropoutEnum, string>
     {
-        { DropoutEnum.SessionExpired, "Session Expired" },
-        { DropoutEnum.AlreadyGiven, "Consent Already Given" },
-        { DropoutEnum.LinkExpired, "The Email Link Has Expired" },
+        { DropoutEnum.SessionExpired, "Session expired" },
+        { DropoutEnum.AlreadyGiven, "Consent already given" },
+        { DropoutEnum.LinkExpired, "The email link has expired" },
     };
 
     private Dictionary<DropoutEnum, string> _dropoutContent = new Dictionary<DropoutEnum, string> 
@@ -19,9 +19,15 @@ public class DropoutModel : PageModel
         { DropoutEnum.AlreadyGiven, "You have already give consent for this applicaiton." },
         { DropoutEnum.LinkExpired, "The email link has expired you will need to let your installer know so that consent can be reissued." },
     };
+    private readonly ILogger<DropoutModel> _logger;
 
     public string Heading { get; set; } = "";
     public string BodyContent { get; set; } = "";
+
+    public DropoutModel(ILogger<DropoutModel> logger)
+    {
+        _logger = logger;
+    }
 
     public IActionResult OnGet(DropoutEnum? dropoutEnum)
     {
@@ -29,6 +35,8 @@ public class DropoutModel : PageModel
 
         Heading = _dropoutHeading[dropoutEnum2];
         BodyContent = _dropoutContent[dropoutEnum2];
+
+        _logger.LogInformation($"DropoutModel OnGet, {Heading}");
 
         return Page();
     }
